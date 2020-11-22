@@ -6,31 +6,26 @@
   <% end %>
 
   <div class="input-group">
-    <%= label f, :name, "Name: "%>
-    <%= text_input f, :name %>
+    <%= text_input f, :name, placeholder: "Name" %>
     <%= error_tag f, :name %>
   </div>
 
   <div class="input-group">
-    <%= label f, :username, "Username: " %>
-    <%= text_input f, :username %>
+    <%= text_input f, :username, placeholder: "Username" %>
     <%= error_tag f, :username %>
   </div>
 
   <%= inputs_for f, :credential, fn cf -> %>
     <div class="input-group">
-      <%= label cf, :email, "Email: " %>
-      <%= text_input cf, :email %>
+      <%= text_input cf, :email, placeholder: "Email" %>
       <%= error_tag cf, :email %>
     </div>
     <div class="input-group">
-      <%= label cf, :password, "Password: " %>
-      <%= password_input cf, :password %>
+      <%= password_input cf, :password, placeholder: "Password" %>
       <%= error_tag cf, :password %>
     </div>
     <div class="input-group">
-      <%= label cf, :password_confirmation, "Confirm Password: " %>
-      <%= password_input cf, :password_confirmation %>
+      <%= password_input cf, :password_confirmation, placeholder: "Confirm Password" %>
       <%= error_tag cf, :password_confirmation %>
     </div>
   <% end %>

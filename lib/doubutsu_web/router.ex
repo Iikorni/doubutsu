@@ -7,10 +7,21 @@ defmodule DoubutsuWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug DoubutsuWeb.Auth, repo: Doubutsu.Repo
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :needs_auth do
+    import DoubutsuWeb.UserController
+    plug :authenticate
+  end
+
+  pipeline :needs_admin do
+    import DoubutsuWeb.UserController
+    plug :auth_admin
   end
 
   scope "/", DoubutsuWeb do
@@ -19,15 +30,20 @@ defmodule DoubutsuWeb.Router do
     get "/", PageController, :index
     get "/register", UserController, :new
     post "/register", UserController, :create
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
   end
 
   scope "/users", DoubutsuWeb do
     pipe_through :browser
 
-    get "/", UserController, :index
     get "/:id", UserController, :show
-    get "/:id/edit", UserController, :edit
-    delete "/:id/delete", UserController, :delete
+  end
+
+  scope "/items", DoubutsuWeb do
+    pipe_through [:browser]
+    resources "/", ItemController
   end
 
   # Other scopes may use custom stacks.

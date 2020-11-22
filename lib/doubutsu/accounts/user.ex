@@ -7,6 +7,7 @@ defmodule Doubutsu.Accounts.User do
   schema "users" do
     field :name, :string
     field :username, :string
+    field :role, :integer
     has_one :credential, Credential
 
     timestamps()
