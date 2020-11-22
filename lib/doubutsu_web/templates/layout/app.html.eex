@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Doubutsu · <%= @title %></title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </head>
+  <body>
+    <header>
+      <nav role="navigation">
+        <ul>
+          <li class="brand"><a href="/">Doubutsu</a></li>
+          <li><a href="#">something</a></li>
+          <li><a href="#">something</a></li>
+          <li><a href="#">something</a></li>
+          <li><a href="#">something</a></li>
+          <li><a href="#">something</a></li>
+          <li class="right">
+            <%= if assigns[:current_user] do %>
+              Hello, <span class="username"><a href="#"><%= @user.username %></a></span>
+              <span class="money"><a href="#">12300</a> ¥</span>
+            <% else %>
+              <a href="#">Login</a> or <%= link "sign up!", to: Routes.user_path(@conn, :new) %>
+            <% end %>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main role="main">
+      <div class="container">
+        <div class="sidebar">
+        </div>
+        <div class="content">
+          <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+          <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+          <%= @inner_content %>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

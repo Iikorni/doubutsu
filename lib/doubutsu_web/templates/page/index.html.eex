@@ -1,0 +1,5 @@
+<div class="greet">
+  <h1>Welcome to the world of Doubutsu!</h1>
+  <h2>A virtual pet site for everyone!</h2>
+  <img class="splash" src="/images/splash.png" />
+</div>

@@ -1,0 +1,157 @@
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert p {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.alert:empty {
+  display: none;
+}
+.invalid-feedback {
+  color: #a94442;
+  display: block;
+  text-align: center;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100vh;
+  height: 100%;
+}
+
+html {
+  overflow: visible;
+}
+
+body {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 75px 1fr;
+  box-sizing: border-box;
+  overflow: visible;
+  background-color: rgba(189, 46, 255, 0.5);
+}
+
+.container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto;
+  grid-row: 2;
+}
+
+.sidebar {
+  grid-column: 1;
+  grid-row: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-right: 2px solid;
+}
+
+.content {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+header {
+  grid-row: 1;
+  border-bottom: 2px solid black;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-rows: 0.5fr 0.25fr 0.5fr;
+}
+
+nav {
+  grid-row: 2;
+  ul {
+    padding: 0;
+    margin: 0;
+    li {
+      display: inline;
+      margin-left: 0.25em;
+      margin-right: 0.25em;
+    }
+    li.brand {
+      font-size: 1.25em;
+      font-weight: bold;
+      margin-left: 2em;
+    }
+    li.right {
+      float: right;
+      margin-right: 2em;
+    }
+  }
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+a,
+a:visited {
+  color: inherit;
+}
+
+.username,
+.money {
+  font-weight: 500;
+  margin-right: 0.5em;
+  padding-right: 0.5em;
+  border-right: 1px solid;
+}
+
+.splash {
+  width: 350px;
+}
+
+.greet {
+  text-align: center;
+}
+
+.input-group {
+  margin-left: 1em;
+  margin-bottom: 1em;
+  label {
+    display: block;
+    text-align: center;
+  }
+  input {
+    width: 40%;
+    height: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+
+  button[type="submit"] {
+    width: 20%;
+    height: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+}
