@@ -191,4 +191,122 @@ defmodule Doubutsu.ThingsTest do
       assert %Ecto.Changeset{} = Things.change_item_classes(item_classes)
     end
   end
+
+  describe "types" do
+    alias Doubutsu.Things.Type
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def type_fixture(attrs \\ %{}) do
+      {:ok, type} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Things.create_type()
+
+      type
+    end
+
+    test "list_types/0 returns all types" do
+      type = type_fixture()
+      assert Things.list_types() == [type]
+    end
+
+    test "get_type!/1 returns the type with given id" do
+      type = type_fixture()
+      assert Things.get_type!(type.id) == type
+    end
+
+    test "create_type/1 with valid data creates a type" do
+      assert {:ok, %Type{} = type} = Things.create_type(@valid_attrs)
+      assert type.name == "some name"
+    end
+
+    test "create_type/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Things.create_type(@invalid_attrs)
+    end
+
+    test "update_type/2 with valid data updates the type" do
+      type = type_fixture()
+      assert {:ok, %Type{} = type} = Things.update_type(type, @update_attrs)
+      assert type.name == "some updated name"
+    end
+
+    test "update_type/2 with invalid data returns error changeset" do
+      type = type_fixture()
+      assert {:error, %Ecto.Changeset{}} = Things.update_type(type, @invalid_attrs)
+      assert type == Things.get_type!(type.id)
+    end
+
+    test "delete_type/1 deletes the type" do
+      type = type_fixture()
+      assert {:ok, %Type{}} = Things.delete_type(type)
+      assert_raise Ecto.NoResultsError, fn -> Things.get_type!(type.id) end
+    end
+
+    test "change_type/1 returns a type changeset" do
+      type = type_fixture()
+      assert %Ecto.Changeset{} = Things.change_type(type)
+    end
+  end
+
+  describe "inventories" do
+    alias Doubutsu.Things.Inventory
+
+    @valid_attrs %{money: 42}
+    @update_attrs %{money: 43}
+    @invalid_attrs %{money: nil}
+
+    def inventory_fixture(attrs \\ %{}) do
+      {:ok, inventory} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Things.create_inventory()
+
+      inventory
+    end
+
+    test "list_inventories/0 returns all inventories" do
+      inventory = inventory_fixture()
+      assert Things.list_inventories() == [inventory]
+    end
+
+    test "get_inventory!/1 returns the inventory with given id" do
+      inventory = inventory_fixture()
+      assert Things.get_inventory!(inventory.id) == inventory
+    end
+
+    test "create_inventory/1 with valid data creates a inventory" do
+      assert {:ok, %Inventory{} = inventory} = Things.create_inventory(@valid_attrs)
+      assert inventory.money == 42
+    end
+
+    test "create_inventory/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Things.create_inventory(@invalid_attrs)
+    end
+
+    test "update_inventory/2 with valid data updates the inventory" do
+      inventory = inventory_fixture()
+      assert {:ok, %Inventory{} = inventory} = Things.update_inventory(inventory, @update_attrs)
+      assert inventory.money == 43
+    end
+
+    test "update_inventory/2 with invalid data returns error changeset" do
+      inventory = inventory_fixture()
+      assert {:error, %Ecto.Changeset{}} = Things.update_inventory(inventory, @invalid_attrs)
+      assert inventory == Things.get_inventory!(inventory.id)
+    end
+
+    test "delete_inventory/1 deletes the inventory" do
+      inventory = inventory_fixture()
+      assert {:ok, %Inventory{}} = Things.delete_inventory(inventory)
+      assert_raise Ecto.NoResultsError, fn -> Things.get_inventory!(inventory.id) end
+    end
+
+    test "change_inventory/1 returns a inventory changeset" do
+      inventory = inventory_fixture()
+      assert %Ecto.Changeset{} = Things.change_inventory(inventory)
+    end
+  end
 end

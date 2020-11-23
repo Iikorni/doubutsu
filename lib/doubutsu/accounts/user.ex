@@ -9,6 +9,7 @@ defmodule Doubutsu.Accounts.User do
     field :username, :string
     field :role, :integer
     has_one :credential, Credential
+    has_one :inventory, Doubutsu.Things.Inventory
 
     timestamps()
   end

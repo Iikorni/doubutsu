@@ -1,40 +1,18 @@
 <h1>Listing Items</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Type</th>
-      <th>Weight</th>
-      <th>Price</th>
-      <th>Rarity</th>
-      <th>Picture</th>
-      <th>No trade</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<div class="inventory">
 <%= for item <- @items do %>
-    <tr>
-      <td><%= item.name %></td>
-      <td><%= item.description %></td>
-      <td><%= item.type %></td>
-      <td><%= item.weight %></td>
-      <td><%= item.price %></td>
-      <td><%= item.rarity %></td>
-      <td><%= item.picture %></td>
-      <td><%= item.no_trade %></td>
-
-      <td>
-        <span><%= link "Show", to: Routes.item_path(@conn, :show, item) %></span>
-        <span><%= link "Edit", to: Routes.item_path(@conn, :edit, item) %></span>
-        <span><%= link "Delete", to: Routes.item_path(@conn, :delete, item), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
+  <div class="item-box">
+    <%= if item.picture do %>
+      <%= img_tag(Path.join("/images/items/", item.picture)) %>
+    <% else %>
+      <%= img_tag(Routes.static_path(@conn, "/images/unknown.png")) %>
+    <% end %>
+    <p class="item-name"><%= item.name %></p>
+    <hr>
+    <p class="item-rarity">Rarity: <%= item.rarity %></p>
+  </div>
 <% end %>
-  </tbody>
-</table>
+</div>
 
 <span><%= link "New Item", to: Routes.item_path(@conn, :new) %></span>

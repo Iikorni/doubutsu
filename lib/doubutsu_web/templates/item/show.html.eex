@@ -14,7 +14,7 @@
 
   <li>
     <strong>Type:</strong>
-    <%= @item.item_type %>
+    <%= @item.type.name %>
   </li>
 
   <li>
@@ -33,8 +33,11 @@
   </li>
 
   <li>
-    <strong>Picture:</strong>
-    <%= @item.picture %>
+  <%= if @item.picture do %>
+    <%= img_tag(Path.join("/images/items/", @item.picture)) %>
+  <% else %>
+    <%= img_tag(Routes.static_path(@conn, "/images/unknown.png")) %>
+  <% end %>
   </li>
 
   <li>

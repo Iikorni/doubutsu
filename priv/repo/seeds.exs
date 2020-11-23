@@ -9,3 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Food"})
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Book"})
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Potion"})

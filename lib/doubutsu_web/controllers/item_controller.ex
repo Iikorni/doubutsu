@@ -11,7 +11,8 @@ defmodule DoubutsuWeb.ItemController do
 
   def new(conn, _params) do
     changeset = Things.change_item(%Item{})
-    render(conn, "new.html", changeset: changeset, title: "New Item")
+    types = Doubutsu.Things.Type |> Doubutsu.Repo.all
+    render(conn, "new.html", changeset: changeset, title: "New Item", types: types)
   end
 
   def create(conn, %{"item" => item_params}) do
@@ -22,7 +23,8 @@ defmodule DoubutsuWeb.ItemController do
         |> redirect(to: Routes.item_path(conn, :show, item))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, title: "New Item")
+        types = Doubutsu.Things.Type |> Doubutsu.Repo.all
+        render(conn, "new.html", changeset: changeset, title: "New Item", types: types)
     end
   end
 
@@ -34,7 +36,8 @@ defmodule DoubutsuWeb.ItemController do
   def edit(conn, %{"id" => id}) do
     item = Things.get_item!(id)
     changeset = Things.change_item(item)
-    render(conn, "edit.html", item: item, changeset: changeset, title: "Edit Item")
+    types = Things.list_types
+    render(conn, "edit.html", item: item, changeset: changeset, title: "Edit Item", types: types)
   end
 
   def update(conn, %{"id" => id, "item" => item_params}) do
