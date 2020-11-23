@@ -142,19 +142,6 @@ defmodule Doubutsu.Things do
   alias Doubutsu.Things.Inventory
 
   @doc """
-  Returns the list of inventories.
-
-  ## Examples
-
-      iex> list_inventories()
-      [%Inventory{}, ...]
-
-  """
-  def list_inventories do
-    Repo.all(Inventory)
-  end
-
-  @doc """
   Gets a single inventory.
 
   Raises `Ecto.NoResultsError` if the Inventory does not exist.
@@ -168,7 +155,15 @@ defmodule Doubutsu.Things do
       ** (Ecto.NoResultsError)
 
   """
-  def get_inventory!(id), do: Repo.get!(Inventory, id)
+  def get_inventory!(id) do
+    # TODO/NOTE: This shouldn't be edited, but get_inventory should have an
+    # alternative extension function for stuff like the inventory view, such
+    # that items can be pre-loaded on demand, rather than being passed on
+    # every request for cash onhand...
+    Inventory
+    |> Repo.get!(id)
+    |> Repo.preload(user: :credential)
+  end
 
   @doc """
   Creates a inventory.
@@ -182,9 +177,10 @@ defmodule Doubutsu.Things do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_inventory(attrs \\ %{}) do
-    %Inventory{}
-    |> Inventory.changeset(attrs)
+  def create_inventory(%Doubutsu.Accounts.User{} = user) do
+    %Inventory{user_id: user.id}
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.unique_constraint(:user_id)
     |> Repo.insert()
   end
 

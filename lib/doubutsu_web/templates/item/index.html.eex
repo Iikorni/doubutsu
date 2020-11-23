@@ -2,16 +2,7 @@
 
 <div class="inventory">
 <%= for item <- @items do %>
-  <div class="item-box">
-    <%= if item.picture do %>
-      <%= img_tag(Path.join("/images/items/", item.picture)) %>
-    <% else %>
-      <%= img_tag(Routes.static_path(@conn, "/images/unknown.png")) %>
-    <% end %>
-    <p class="item-name"><%= item.name %></p>
-    <hr>
-    <p class="item-rarity">Rarity: <%= item.rarity %></p>
-  </div>
+  <%= render DoubutsuWeb.ItemView, "_item.html", item: item %>
 <% end %>
 </div>
 

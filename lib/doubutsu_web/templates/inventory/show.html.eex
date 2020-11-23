@@ -1,0 +1,3 @@
+<h1>Inventory</h1>
+
+<p>Cash on hand: <%= @current_user.inventory.money %> ¥</p>

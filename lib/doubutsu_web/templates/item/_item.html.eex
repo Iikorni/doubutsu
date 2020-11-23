@@ -1,0 +1,10 @@
+<div class="item-box">
+    <%= if @item.picture do %>
+        <%= img_tag(Path.join("/images/items/", @item.picture), alt: @item.description, title: @item.description) %>
+    <% else %>
+        <%= img_tag(Routes.static_path(@conn, "/images/unknown.png"), alt: @item.description, title: @item.description) %>
+    <% end %>
+    <p class="item-name"><%= @item.name %></p>
+    <hr>
+    <p class="item-rarity">Rarity: <%= @item.rarity %></p>
+</div>

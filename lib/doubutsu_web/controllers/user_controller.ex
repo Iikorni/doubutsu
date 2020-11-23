@@ -3,6 +3,7 @@ defmodule DoubutsuWeb.UserController do
 
   alias Doubutsu.Accounts
   alias Doubutsu.Accounts.User
+  alias Doubutsu.Registration
 
   plug :authenticate when action in [:show]
 
@@ -12,8 +13,8 @@ defmodule DoubutsuWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    case Accounts.create_user(user_params) do
-      {:ok, user} ->
+    case Registration.register_user(user_params) do
+      {:ok, %{user: user}} ->
         conn
         |> DoubutsuWeb.Auth.login(user)
         |> put_flash(:info, "User created successfully.")
@@ -35,7 +36,7 @@ defmodule DoubutsuWeb.UserController do
     else
       conn
       |> put_flash(:error, "You're not logged in!")
-      |> redirect(to: "/")
+      |> redirect(to: Routes.session_path(conn, :new))
       |> halt()
     end
   end

@@ -21,7 +21,7 @@
           <li class="right">
             <%= if assigns[:current_user] do %>
               Hello, <span class="username"><a href="#"><%= link @current_user.username, to: Routes.user_path(@conn, :show, @current_user.id) %></a></span>
-              <span class="money"><a href="#">12300</a> ¥</span>
+              <span class="money"><a href="#"><%= @current_user.inventory.money %></a> ¥</span>
               <span class="logout"><%= link "Logout", to: Routes.session_path(@conn, :delete), method: :delete %>
             <% else %>
               <%= link "Login", to: Routes.session_path(@conn, :new) %> or <%= link "sign up!", to: Routes.user_path(@conn, :new) %>

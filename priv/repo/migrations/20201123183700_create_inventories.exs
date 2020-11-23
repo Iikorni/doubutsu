@@ -3,12 +3,12 @@ defmodule Doubutsu.Repo.Migrations.CreateInventories do
 
   def change do
     create table(:inventories) do
-      add :money, :integer
+      add :money, :integer, default: 100
       add :user_id, references(:users, on_delete: :delete_all)
 
       timestamps()
     end
 
-    create index(:inventories, [:user_id])
+    create unique_index(:inventories, [:user_id])
   end
 end
