@@ -165,6 +165,12 @@ defmodule Doubutsu.Things do
     |> Repo.preload(user: :credential)
   end
 
+  def get_full_inventory!(id) do
+    Inventory
+    |> Repo.get!(id)
+    |> Repo.preload(instances: :item)
+  end
+
   @doc """
   Creates a inventory.
 
@@ -229,5 +235,88 @@ defmodule Doubutsu.Things do
   """
   def change_inventory(%Inventory{} = inventory, attrs \\ %{}) do
     Inventory.changeset(inventory, attrs)
+  end
+
+  alias Doubutsu.Things.Instance
+
+  @doc """
+  Gets a single instance.
+
+  Raises `Ecto.NoResultsError` if the Instance does not exist.
+
+  ## Examples
+
+      iex> get_instance!(123)
+      %Instance{}
+
+      iex> get_instance!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_instance!(id), do: Repo.get!(Instance, id)
+
+  @doc """
+  Creates a instance.
+
+  ## Examples
+
+      iex> create_instance(%{field: value})
+      {:ok, %Instance{}}
+
+      iex> create_instance(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_instance(attrs \\ %{}) do
+    %Instance{}
+    |> Instance.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a instance.
+
+  ## Examples
+
+      iex> update_instance(instance, %{field: new_value})
+      {:ok, %Instance{}}
+
+      iex> update_instance(instance, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_instance(%Instance{} = instance, attrs) do
+    instance
+    |> Instance.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a instance.
+
+  ## Examples
+
+      iex> delete_instance(instance)
+      {:ok, %Instance{}}
+
+      iex> delete_instance(instance)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_instance(%Instance{} = instance) do
+    Repo.delete(instance)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking instance changes.
+
+  ## Examples
+
+      iex> change_instance(instance)
+      %Ecto.Changeset{data: %Instance{}}
+
+  """
+  def change_instance(%Instance{} = instance, attrs \\ %{}) do
+    Instance.changeset(instance, attrs)
   end
 end

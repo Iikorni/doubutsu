@@ -6,6 +6,8 @@ defmodule Doubutsu.Things.Inventory do
     field :money, :integer
     belongs_to :user, Doubutsu.Accounts.User
 
+    has_many :instances, Doubutsu.Things.Instance
+
     timestamps()
   end
 

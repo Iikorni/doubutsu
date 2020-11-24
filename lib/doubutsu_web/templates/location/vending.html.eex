@@ -1,0 +1,24 @@
+<h1>Vending Machine</h1>
+
+<div class="centered">
+    <%=img_tag("/images/vending.png", width: 350) %>
+    <p>In an odd part of the mall sits a lone vending machine, seemingly unattended.</p>
+    <p>A big sign says:</p>
+    <h2>200 ¥ per can</h2>
+    <hr>
+    <%= if @current_user.inventory.money > 200 do %>
+    <%= form_for @conn, Routes.location_path(@conn, :vending_post), [as: :request], fn f -> %>
+        <%= hidden_input f, :token, value: @token%>
+        <div class="input-group">
+            <%= label f, :flavour, "Button To Press:" %>
+            <%= select f, :flavour, ["Green", "Red", "Blue", "Orange", "Violet"] |> Enum.with_index %>
+            <%= error_tag f, :flavour %>
+        </div>
+        <div class="input-group">
+            <%= submit "Vend" %>
+        </div>
+    <% end %>
+    <% else %>
+        <p>Whoops! It looks like you don't have enough money to use the vending machine...</p>
+    <% end %>
+</div>

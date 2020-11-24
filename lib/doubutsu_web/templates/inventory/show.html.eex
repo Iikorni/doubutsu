@@ -1,3 +1,9 @@
 <h1>Inventory</h1>
 
-<p>Cash on hand: <%= @current_user.inventory.money %> ¥</p>
+<p>Cash on hand: <%= @inventory.money %> ¥</p>
+
+<div class="inventory">
+<%= for instance <- @inventory.instances do %>
+  <%= render DoubutsuWeb.ItemView, "_item.html", item: instance.item %>
+<% end %>
+</div>

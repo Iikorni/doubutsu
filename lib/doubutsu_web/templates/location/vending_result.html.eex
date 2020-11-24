@@ -1,0 +1,8 @@
+<h1>Vending Machine</h1>
+<div class="centered">
+    <%=img_tag("/images/vending.png", width: 350) %>
+    <p>The vending machine whirrs and thunks, before coughing up your purchase.</p>
+    <%= form_for @conn, Routes.location_path(@conn, :vending_get), [method: :get], fn f -> %>
+        <%= submit "Make Another Purchase" %>
+    <%=end %>
+</div>

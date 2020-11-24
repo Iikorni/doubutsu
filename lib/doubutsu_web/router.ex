@@ -35,6 +35,14 @@ defmodule DoubutsuWeb.Router do
     delete "/logout", SessionController, :delete
   end
 
+  scope "/mall", DoubutsuWeb do
+    pipe_through [:browser, :needs_auth]
+
+    get "/vending", LocationController, :vending_get
+    get "/vending_result", LocationController, :vending_res_get
+    post "/vending_result", LocationController, :vending_post
+  end
+
   scope "/users", DoubutsuWeb do
     pipe_through :browser
 

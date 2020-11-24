@@ -309,4 +309,61 @@ defmodule Doubutsu.ThingsTest do
       assert %Ecto.Changeset{} = Things.change_inventory(inventory)
     end
   end
+
+  describe "instances" do
+    alias Doubutsu.Things.Instance
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def instance_fixture(attrs \\ %{}) do
+      {:ok, instance} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Things.create_instance()
+
+      instance
+    end
+
+    test "list_instances/0 returns all instances" do
+      instances = instances_fixture()
+      assert Things.list_instances() == [instances]
+    end
+
+    test "get_instances!/1 returns the instances with given id" do
+      instances = instances_fixture()
+      assert Things.get_instances!(instances.id) == instances
+    end
+
+    test "create_instances/1 with valid data creates a instances" do
+      assert {:ok, %Instances{} = instances} = Things.create_instances(@valid_attrs)
+    end
+
+    test "create_instances/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Things.create_instances(@invalid_attrs)
+    end
+
+    test "update_instances/2 with valid data updates the instances" do
+      instances = instances_fixture()
+      assert {:ok, %Instances{} = instances} = Things.update_instances(instances, @update_attrs)
+    end
+
+    test "update_instances/2 with invalid data returns error changeset" do
+      instances = instances_fixture()
+      assert {:error, %Ecto.Changeset{}} = Things.update_instances(instances, @invalid_attrs)
+      assert instances == Things.get_instances!(instances.id)
+    end
+
+    test "delete_instances/1 deletes the instances" do
+      instances = instances_fixture()
+      assert {:ok, %Instances{}} = Things.delete_instances(instances)
+      assert_raise Ecto.NoResultsError, fn -> Things.get_instances!(instances.id) end
+    end
+
+    test "change_instances/1 returns a instances changeset" do
+      instances = instances_fixture()
+      assert %Ecto.Changeset{} = Things.change_instances(instances)
+    end
+  end
 end

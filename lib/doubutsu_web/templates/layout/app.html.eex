@@ -20,8 +20,8 @@
           <li><a href="#">something</a></li>
           <li class="right">
             <%= if assigns[:current_user] do %>
-              Hello, <span class="username"><a href="#"><%= link @current_user.username, to: Routes.user_path(@conn, :show, @current_user.id) %></a></span>
-              <span class="money"><a href="#"><%= @current_user.inventory.money %></a> ¥</span>
+              Hello, <span class="username"><%= link @current_user.username, to: Routes.user_path(@conn, :show, @current_user.id) %></span>
+              <span class="money"><%= link @current_user.inventory.money, to: Routes.inventory_path(@conn, :show_individual) %> ¥</span>
               <span class="logout"><%= link "Logout", to: Routes.session_path(@conn, :delete), method: :delete %>
             <% else %>
               <%= link "Login", to: Routes.session_path(@conn, :new) %> or <%= link "sign up!", to: Routes.user_path(@conn, :new) %>
@@ -38,8 +38,13 @@
           <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
           <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
           <%= @inner_content %>
+          <br>
+          <br>
         </div>
       </div>
     </main>
+    <footer>
+      <p>Doubutsu is a product no one really cares about in any capacity. All rights still reserved.</p>
+    </footer>
   </body>
 </html>
