@@ -73,6 +73,9 @@ body {
 .content {
   grid-column: 2;
   grid-row: 1;
+  .left-align {
+    margin-left: 1em;
+  }
 }
 
 header {
@@ -179,7 +182,6 @@ a:visited {
   margin-right: auto;
   text-align: center;
   width: 800px;
-
   img {
     border: 1px solid black;
     width: 80px;
@@ -189,9 +191,10 @@ a:visited {
     background-color: rgba(0, 0, 0, 0.125);
     padding: 0.5em
   }
-  .item-name {
-    font-weight: bold;
-  }
+}
+
+.item-name {
+  font-weight: bold;
 }
 
 .centered {

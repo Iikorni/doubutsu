@@ -1,6 +1,9 @@
 defmodule DoubutsuWeb.LocationController do
   use DoubutsuWeb, :controller
 
+  alias Doubutsu.Prizes
+  alias Doubutsu.Things
+
 
   def vending_get(conn, _) do
     token = Doubutsu.Util.gen_token()
@@ -16,16 +19,25 @@ defmodule DoubutsuWeb.LocationController do
 
   def vending_post(conn, %{"request" => request}) do
     user = conn.assigns[:current_user]
-    if user.inventory.money < 200 do
+    if not Things.has_the_cash(user.inventory, 200) do
       conn
       |> put_flash(:error, "Whoops, it looks like you don't have enough money...")
       |> redirect(to: Routes.location_path(conn, :vending_get))
     else
       token = get_session(conn, :vend_token)
       if token && request["token"] == token do
-        conn
-        |> put_session(:vend_token, nil)
-        |> render("vending_result.html", title: "Vending Machine")
+        prize = Prizes.get_prize_from_prize_pool(Prizes.get_prize_pool_by_name!("vending_machine"))
+        case Things.create_instance_from_item_inventory(prize.item, user.inventory) do
+          {:ok, _} ->
+            Things.subtract_cost(user.inventory, 200)
+            conn
+            |> put_session(:vend_token, nil)
+            |> render("vending_result.html", title: "Vending Machine", prize: prize)
+          {:error, _} ->
+            conn
+            |> put_session(:vend_token, nil)
+            |> render("vending_result.html", title: "Vending Machine", prize: nil)
+        end
       else
         conn
         |> put_flash(:error, "Hmm. We're not sure how you got here...")

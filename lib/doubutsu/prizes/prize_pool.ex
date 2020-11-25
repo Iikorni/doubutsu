@@ -6,6 +6,8 @@ defmodule Doubutsu.Prizes.PrizePool do
     field :description, :string
     field :name, :string
 
+    has_many :prizes, Doubutsu.Prizes.Prize
+
     timestamps()
   end
 

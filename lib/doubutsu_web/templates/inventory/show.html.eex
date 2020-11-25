@@ -1,6 +1,6 @@
 <h1>Inventory</h1>
 
-<p>Cash on hand: <%= @inventory.money %> ¥</p>
+<p class="left-align"><b>Number of items:</b> <%= Enum.count(@inventory.instances) %>
 
 <div class="inventory">
 <%= for instance <- @inventory.instances do %>

@@ -139,7 +139,7 @@ defmodule Doubutsu.Things do
   """
   def get_type!(id), do: Repo.get!(Type, id)
 
-  alias Doubutsu.Things.Inventory
+  alias Doubutsu.Things.{Inventory, Instance}
 
   @doc """
   Gets a single inventory.
@@ -168,7 +168,7 @@ defmodule Doubutsu.Things do
   def get_full_inventory!(id) do
     Inventory
     |> Repo.get!(id)
-    |> Repo.preload(instances: :item)
+    |> Repo.preload(instances: from(i in Instance, order_by: [desc: i.id], preload: :item))
   end
 
   @doc """
@@ -208,6 +208,18 @@ defmodule Doubutsu.Things do
     |> Repo.update()
   end
 
+  def subtract_cost(%Inventory{} = inventory, cost) do
+    {1, [%Inventory{money: money}]} =
+      from(i in Inventory, where: i.id == ^inventory.id, select: [:money])
+      |> Repo.update_all(inc: [money: -cost])
+
+    put_in(inventory.money, money)
+  end
+
+  def has_the_cash(%Inventory{} = inventory, cash) do
+    inventory.money >= cash
+  end
+
   @doc """
   Deletes a inventory.
 
@@ -236,8 +248,6 @@ defmodule Doubutsu.Things do
   def change_inventory(%Inventory{} = inventory, attrs \\ %{}) do
     Inventory.changeset(inventory, attrs)
   end
-
-  alias Doubutsu.Things.Instance
 
   @doc """
   Gets a single instance.
@@ -270,6 +280,12 @@ defmodule Doubutsu.Things do
   def create_instance(attrs \\ %{}) do
     %Instance{}
     |> Instance.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_instance_from_item_inventory(%Item{} = item, %Inventory{} = inventory) do
+    changeset = %Instance{}
+    |> Instance.invitem_changeset(item, inventory)
     |> Repo.insert()
   end
 

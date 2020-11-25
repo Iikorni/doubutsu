@@ -35,7 +35,17 @@ defmodule Doubutsu.Prizes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_prize_pool!(id), do: Repo.get!(PrizePool, id)
+  def get_prize_pool!(id) do
+    PrizePool
+    |> Repo.get!(id)
+    |> Repo.preload(prizes: [:item])
+  end
+
+  def get_prize_pool_by_name!(name) do
+    PrizePool
+    |> Repo.get_by(name: name)
+    |> Repo.preload(prizes: [:item])
+  end
 
   @doc """
   Creates a prize_pool.
@@ -100,5 +110,113 @@ defmodule Doubutsu.Prizes do
   """
   def change_prize_pool(%PrizePool{} = prize_pool, attrs \\ %{}) do
     PrizePool.changeset(prize_pool, attrs)
+  end
+
+  def weighted_selection([{choice, weight} | tail], idx) when idx <= 0, do: choice
+  def weighted_selection([{_, weight} | tail], idx), do: weighted_selection(tail, idx - weight)
+
+  def get_prize_from_prize_pool(prize_pool) do
+    sum = Enum.reduce(prize_pool.prizes, 0, fn(prize, a) -> prize.weight + a end)
+    weight_pairs = Enum.map(prize_pool.prizes, &{&1, &1.weight})
+    weighted_selection(weight_pairs, :rand.uniform(sum)-1)
+  end
+
+  alias Doubutsu.Prizes.Prize
+
+  @doc """
+  Returns the list of prizes.
+
+  ## Examples
+
+      iex> list_prizes()
+      [%Prize{}, ...]
+
+  """
+  def list_prizes do
+    Repo.all(Prize)
+  end
+
+  @doc """
+  Gets a single prize.
+
+  Raises `Ecto.NoResultsError` if the Prize does not exist.
+
+  ## Examples
+
+      iex> get_prize!(123)
+      %Prize{}
+
+      iex> get_prize!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_prize!(id) do
+    Repo.get!(Prize, id)
+    |> Repo.preload(:prize_pool)
+  end
+
+  @doc """
+  Creates a prize.
+
+  ## Examples
+
+      iex> create_prize(%{field: value})
+      {:ok, %Prize{}}
+
+      iex> create_prize(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_prize(attrs \\ %{}) do
+    %Prize{}
+    |> Prize.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a prize.
+
+  ## Examples
+
+      iex> update_prize(prize, %{field: new_value})
+      {:ok, %Prize{}}
+
+      iex> update_prize(prize, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_prize(%Prize{} = prize, attrs) do
+    prize
+    |> Prize.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a prize.
+
+  ## Examples
+
+      iex> delete_prize(prize)
+      {:ok, %Prize{}}
+
+      iex> delete_prize(prize)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_prize(%Prize{} = prize) do
+    Repo.delete(prize)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking prize changes.
+
+  ## Examples
+
+      iex> change_prize(prize)
+      %Ecto.Changeset{data: %Prize{}}
+
+  """
+  def change_prize(%Prize{} = prize, attrs \\ %{}) do
+    Prize.changeset(prize, attrs)
   end
 end

@@ -76,122 +76,6 @@ defmodule Doubutsu.ThingsTest do
     end
   end
 
-  describe "item_types" do
-    alias Doubutsu.Things.ItemType
-
-    @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
-
-    def item_type_fixture(attrs \\ %{}) do
-      {:ok, item_type} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Things.create_item_type()
-
-      item_type
-    end
-
-    test "list_item_types/0 returns all item_types" do
-      item_type = item_type_fixture()
-      assert Things.list_item_types() == [item_type]
-    end
-
-    test "get_item_type!/1 returns the item_type with given id" do
-      item_type = item_type_fixture()
-      assert Things.get_item_type!(item_type.id) == item_type
-    end
-
-    test "create_item_type/1 with valid data creates a item_type" do
-      assert {:ok, %ItemType{} = item_type} = Things.create_item_type(@valid_attrs)
-      assert item_type.name == "some name"
-    end
-
-    test "create_item_type/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Things.create_item_type(@invalid_attrs)
-    end
-
-    test "update_item_type/2 with valid data updates the item_type" do
-      item_type = item_type_fixture()
-      assert {:ok, %ItemType{} = item_type} = Things.update_item_type(item_type, @update_attrs)
-      assert item_type.name == "some updated name"
-    end
-
-    test "update_item_type/2 with invalid data returns error changeset" do
-      item_type = item_type_fixture()
-      assert {:error, %Ecto.Changeset{}} = Things.update_item_type(item_type, @invalid_attrs)
-      assert item_type == Things.get_item_type!(item_type.id)
-    end
-
-    test "delete_item_type/1 deletes the item_type" do
-      item_type = item_type_fixture()
-      assert {:ok, %ItemType{}} = Things.delete_item_type(item_type)
-      assert_raise Ecto.NoResultsError, fn -> Things.get_item_type!(item_type.id) end
-    end
-
-    test "change_item_type/1 returns a item_type changeset" do
-      item_type = item_type_fixture()
-      assert %Ecto.Changeset{} = Things.change_item_type(item_type)
-    end
-  end
-
-  describe "item_classes" do
-    alias Doubutsu.Things.ItemClasses
-
-    @valid_attrs %{}
-    @update_attrs %{}
-    @invalid_attrs %{}
-
-    def item_classes_fixture(attrs \\ %{}) do
-      {:ok, item_classes} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Things.create_item_classes()
-
-      item_classes
-    end
-
-    test "list_item_classes/0 returns all item_classes" do
-      item_classes = item_classes_fixture()
-      assert Things.list_item_classes() == [item_classes]
-    end
-
-    test "get_item_classes!/1 returns the item_classes with given id" do
-      item_classes = item_classes_fixture()
-      assert Things.get_item_classes!(item_classes.id) == item_classes
-    end
-
-    test "create_item_classes/1 with valid data creates a item_classes" do
-      assert {:ok, %ItemClasses{} = item_classes} = Things.create_item_classes(@valid_attrs)
-    end
-
-    test "create_item_classes/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Things.create_item_classes(@invalid_attrs)
-    end
-
-    test "update_item_classes/2 with valid data updates the item_classes" do
-      item_classes = item_classes_fixture()
-      assert {:ok, %ItemClasses{} = item_classes} = Things.update_item_classes(item_classes, @update_attrs)
-    end
-
-    test "update_item_classes/2 with invalid data returns error changeset" do
-      item_classes = item_classes_fixture()
-      assert {:error, %Ecto.Changeset{}} = Things.update_item_classes(item_classes, @invalid_attrs)
-      assert item_classes == Things.get_item_classes!(item_classes.id)
-    end
-
-    test "delete_item_classes/1 deletes the item_classes" do
-      item_classes = item_classes_fixture()
-      assert {:ok, %ItemClasses{}} = Things.delete_item_classes(item_classes)
-      assert_raise Ecto.NoResultsError, fn -> Things.get_item_classes!(item_classes.id) end
-    end
-
-    test "change_item_classes/1 returns a item_classes changeset" do
-      item_classes = item_classes_fixture()
-      assert %Ecto.Changeset{} = Things.change_item_classes(item_classes)
-    end
-  end
-
   describe "types" do
     alias Doubutsu.Things.Type
 
@@ -327,43 +211,43 @@ defmodule Doubutsu.ThingsTest do
     end
 
     test "list_instances/0 returns all instances" do
-      instances = instances_fixture()
+      instances = instance_fixture()
       assert Things.list_instances() == [instances]
     end
 
-    test "get_instances!/1 returns the instances with given id" do
-      instances = instances_fixture()
-      assert Things.get_instances!(instances.id) == instances
+    test "get_instance!/1 returns the instances with given id" do
+      instances = instance_fixture()
+      assert Things.get_instance!(instances.id) == instances
     end
 
-    test "create_instances/1 with valid data creates a instances" do
-      assert {:ok, %Instances{} = instances} = Things.create_instances(@valid_attrs)
+    test "create_instance/1 with valid data creates a instances" do
+      assert {:ok, %Instance{} = instance} = Things.create_instance(@valid_attrs)
     end
 
-    test "create_instances/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Things.create_instances(@invalid_attrs)
+    test "create_instance/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Things.create_instance(@invalid_attrs)
     end
 
-    test "update_instances/2 with valid data updates the instances" do
-      instances = instances_fixture()
-      assert {:ok, %Instances{} = instances} = Things.update_instances(instances, @update_attrs)
+    test "update_instance/2 with valid data updates the instance" do
+      instance = instance_fixture()
+      assert {:ok, %Instance{} = instance} = Things.update_instance(instance, @update_attrs)
     end
 
-    test "update_instances/2 with invalid data returns error changeset" do
-      instances = instances_fixture()
-      assert {:error, %Ecto.Changeset{}} = Things.update_instances(instances, @invalid_attrs)
-      assert instances == Things.get_instances!(instances.id)
+    test "update_instance/2 with invalid data returns error changeset" do
+      instance = instance_fixture()
+      assert {:error, %Ecto.Changeset{}} = Things.update_instance(instance, @invalid_attrs)
+      assert instance == Things.get_instance!(instance.id)
     end
 
-    test "delete_instances/1 deletes the instances" do
-      instances = instances_fixture()
-      assert {:ok, %Instances{}} = Things.delete_instances(instances)
-      assert_raise Ecto.NoResultsError, fn -> Things.get_instances!(instances.id) end
+    test "delete_instance/1 deletes the instance" do
+      instance = instance_fixture()
+      assert {:ok, %Instance{}} = Things.delete_instance(instance)
+      assert_raise Ecto.NoResultsError, fn -> Things.get_instance!(instance.id) end
     end
 
-    test "change_instances/1 returns a instances changeset" do
-      instances = instances_fixture()
-      assert %Ecto.Changeset{} = Things.change_instances(instances)
+    test "change_instance/1 returns a instance changeset" do
+      instance = instance_fixture()
+      assert %Ecto.Changeset{} = Things.change_instance(instance)
     end
   end
 end

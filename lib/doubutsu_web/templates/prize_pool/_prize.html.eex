@@ -1,0 +1,14 @@
+<div class="item-box">
+    <a href="<%= Routes.prize_path(@conn, :edit, @prize) %>">
+        <%= if @prize.item.picture do %>
+            <%= img_tag(Path.join("/images/items/", @prize.item.picture), alt: @prize.item.description, title: @prize.item.description) %>
+        <% else %>
+            <%= img_tag(Routes.static_path(@conn, "/images/unknown.png"), alt: @prize.item.description, title: @prize.item.description) %>
+        <% end %>
+    </a>
+    <p class="item-name"><%= @prize.item.name %></p>
+    <hr>
+    <p class="item-rarity">Rarity: <%= @prize.item.rarity %></p>
+    <hr>
+    <p class="item-rarity">Weight: <%= @prize.weight %></p>
+</div>

@@ -49,6 +49,16 @@ defmodule DoubutsuWeb.Router do
     get "/:id", UserController, :show
   end
 
+  scope "/prizes", DoubutsuWeb do
+    pipe_through :browser
+
+    resources "/", PrizeController, except: [:index]
+
+    get "/pool/new", PrizePoolController, :new
+    post "/pool/create", PrizePoolController, :create
+    get "/pool/:id", PrizePoolController, :show
+  end
+
   scope "/items", DoubutsuWeb do
     pipe_through [:browser]
     resources "/", ItemController

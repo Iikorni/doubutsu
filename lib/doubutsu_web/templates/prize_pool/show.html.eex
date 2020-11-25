@@ -1,0 +1,9 @@
+<h1>Viewing '<pre style="display:inline;"><%= @prize_pool.name %></pre>' prize pool</h1>
+<div class="centered">
+    <p>Description: <em><%= @prize_pool.description %></em></p>
+    <div class="inventory">
+        <%= for prize <- @prize_pool.prizes do %>
+            <%= render DoubutsuWeb.PrizePoolView, "_prize.html", prize: prize, conn: @conn %>
+        <% end %>
+    </div>
+</div>

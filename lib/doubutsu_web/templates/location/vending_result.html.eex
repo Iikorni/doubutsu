@@ -1,8 +1,19 @@
 <h1>Vending Machine</h1>
 <div class="centered">
     <%=img_tag("/images/vending.png", width: 350) %>
-    <p>The vending machine whirrs and thunks, before coughing up your purchase.</p>
-    <%= form_for @conn, Routes.location_path(@conn, :vending_get), [method: :get], fn f -> %>
+    <%= if @prize do %>
+        <p>The vending machine whirrs and thunks, before coughing up your purchase.</p>
+        <%= if @prize.item.picture do %>
+            <%= img_tag(Path.join("/images/items/", @prize.item.picture), alt: @prize.item.description, title: @prize.item.description) %>
+        <% else %>
+            <%= img_tag(Routes.static_path(@conn, "/images/unknown.png"), alt: @prize.item.description, title: @prize.item.description) %>
+        <% end %>
+        <p class="item-name"><%= @prize.item.name %></p>
+    <% else %>
+        <p>The vending machine whirrs and sputters, but spits nothing out - except for your money.</p>
+        <p>Maybe try again later?</p>
+    <% end %>
+    <%= form_for @conn, Routes.location_path(@conn, :vending_get), [method: :get], fn _ -> %>
         <%= submit "Make Another Purchase" %>
-    <%=end %>
+    <% end %>
 </div>

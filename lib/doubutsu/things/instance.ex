@@ -15,4 +15,11 @@ defmodule Doubutsu.Things.Instance do
     |> cast(attrs, [])
     |> validate_required([])
   end
+
+  def invitem_changeset(instance, item, inventory) do
+    instance
+    |> cast(%{}, [])
+    |> put_change(:item_id, item.id)
+    |> put_change(:inventory_id, inventory.id)
+  end
 end

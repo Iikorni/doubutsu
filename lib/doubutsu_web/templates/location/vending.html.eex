@@ -6,7 +6,7 @@
     <p>A big sign says:</p>
     <h2>200 ¥ per can</h2>
     <hr>
-    <%= if @current_user.inventory.money > 200 do %>
+    <%= if Doubutsu.Things.has_the_cash(@current_user.inventory, 200) do %>
     <%= form_for @conn, Routes.location_path(@conn, :vending_post), [as: :request], fn f -> %>
         <%= hidden_input f, :token, value: @token%>
         <div class="input-group">
