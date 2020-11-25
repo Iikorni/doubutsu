@@ -33,6 +33,15 @@
     <main role="main">
       <div class="container">
         <div class="sidebar">
+          <div class="pet-container">
+            <p><b><%= @current_user.owner.active_pet.name %></b></p>
+            <%= PetView.pet_img(@current_user.owner.active_pet) %>
+            <p><b>Breed</b>: <%= @current_user.owner.active_pet.breed.name %></p>
+            <p><b>Health</b>: <%= @current_user.owner.active_pet.health %>/<%= @current_user.owner.active_pet.max_health %></p>
+            <p><b>Hunger</b>: <%= PetView.hunger_str(@current_user.owner.active_pet.hunger) %></p>
+            <p><b>Age</b>: <%= PetView.age_str(@current_user.owner.active_pet.inserted_at) %></p>
+            <p><b>Level</b>: <%= @current_user.owner.active_pet.level %></p>
+          </div>
         </div>
         <div class="content">
           <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

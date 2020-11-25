@@ -26,14 +26,20 @@ defmodule DoubutsuWeb.LocationController do
     else
       token = get_session(conn, :vend_token)
       if token && request["token"] == token do
-        prize = Prizes.get_prize_from_prize_pool(Prizes.get_prize_pool_by_name!("vending_machine"))
-        case Things.create_instance_from_item_inventory(prize.item, user.inventory) do
-          {:ok, _} ->
-            Things.subtract_cost(user.inventory, 200)
-            conn
-            |> put_session(:vend_token, nil)
-            |> render("vending_result.html", title: "Vending Machine", prize: prize)
-          {:error, _} ->
+        case Prizes.get_prize_from_prize_pool(Prizes.get_prize_pool_by_name!("vending_machine")) do
+          {:ok, prize} ->
+            case Things.create_instance_from_item_inventory(prize.item, user.inventory) do
+              {:ok, _} ->
+                Things.subtract_cost(user.inventory, 200)
+                conn
+                |> put_session(:vend_token, nil)
+                |> render("vending_result.html", title: "Vending Machine", prize: prize)
+              {:error, _} ->
+                conn
+                |> put_session(:vend_token, nil)
+                |> render("vending_result.html", title: "Vending Machine", prize: nil)
+            end
+          {:none, nil} ->
             conn
             |> put_session(:vend_token, nil)
             |> render("vending_result.html", title: "Vending Machine", prize: nil)

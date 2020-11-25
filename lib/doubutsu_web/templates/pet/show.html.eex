@@ -1,0 +1,17 @@
+<h1>Viewing <%= @pet.name %></h1>
+<div class="centered">
+    <%= img_tag("/images/pets/#{@pet.breed.slug}/#{@pet.colour.slug}.png") %>
+</div>
+<ul>
+    <li><b>Breed</b>: <%= @pet.breed.name %></li>
+    <li><b>Colour</b>: <%= @pet.colour.name %></li>
+    <li><b>Gender</b>: <%= gender_str(@pet.gender) %></li>
+    <li><b>Age</b>: <%= age_str(@pet.inserted_at) %></li>
+    <li><b>Level</b>: <%= @pet.level %></li>
+    <li><b>Health</b>: <%= @pet.health %>/<%= @pet.max_health %></li>
+    <li><b>Hunger</b>: <%= hunger_str(@pet.hunger) %></li>
+    <li><b>Strength</b>: <%= @pet.strength %></li>
+    <li><b>Defense</b>: <%= @pet.defense %></li>
+    <li><b>Agility</b>: <%= @pet.agility %></li>
+    <li><b>Intellect</b>: <%= @pet.intellect %></li>
+</ul>

@@ -112,13 +112,20 @@ defmodule Doubutsu.Prizes do
     PrizePool.changeset(prize_pool, attrs)
   end
 
-  def weighted_selection([{choice, weight} | tail], idx) when idx <= 0, do: choice
+  def weighted_selection([{choice, weight} | tail], idx) when idx < weight, do: choice
   def weighted_selection([{_, weight} | tail], idx), do: weighted_selection(tail, idx - weight)
 
   def get_prize_from_prize_pool(prize_pool) do
-    sum = Enum.reduce(prize_pool.prizes, 0, fn(prize, a) -> prize.weight + a end)
-    weight_pairs = Enum.map(prize_pool.prizes, &{&1, &1.weight})
-    weighted_selection(weight_pairs, :rand.uniform(sum)-1)
+    case prize_pool.prizes do
+      [] ->
+        {:none, nil}
+      pairs ->
+        sum = Enum.reduce(pairs, 0, fn(prize, a) -> prize.weight + a end)
+        weight_pairs = Enum.map(pairs, &{&1, &1.weight})
+        pos = :rand.uniform(sum)-1
+        IO.puts(pos)
+        {:ok, weighted_selection(weight_pairs, pos)}
+    end
   end
 
   alias Doubutsu.Prizes.Prize

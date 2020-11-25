@@ -50,4 +50,13 @@ defmodule DoubutsuWeb.PrizeController do
       end
   end
 
+  def delete(conn, %{"id" => id}) do
+    prize = Prizes.get_prize!(id)
+    {:ok, _prize} = Prizes.delete_prize(prize)
+
+    conn
+    |> put_flash(:info, "Prize deleted successfully.")
+    |> redirect(to: Routes.prize_pool_path(conn, :show, prize.prize_pool))
+  end
+
 end

@@ -59,6 +59,12 @@ defmodule DoubutsuWeb.Router do
     get "/pool/:id", PrizePoolController, :show
   end
 
+  scope "/pets", DoubutsuWeb do
+    pipe_through :browser
+
+    resources "/", PetController, only: [:show]
+  end
+
   scope "/items", DoubutsuWeb do
     pipe_through [:browser]
     resources "/", ItemController

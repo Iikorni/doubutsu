@@ -284,7 +284,7 @@ defmodule Doubutsu.Things do
   end
 
   def create_instance_from_item_inventory(%Item{} = item, %Inventory{} = inventory) do
-    changeset = %Instance{}
+    %Instance{}
     |> Instance.invitem_changeset(item, inventory)
     |> Repo.insert()
   end

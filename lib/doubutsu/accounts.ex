@@ -40,7 +40,7 @@ defmodule Doubutsu.Accounts do
   def get_user!(id) do
     User
     |> Repo.get!(id)
-    |> Repo.preload([:credential, :inventory])
+    |> Repo.preload([:credential, :inventory, owner: [active_pet: [:breed, :colour]]])
   end
 
   @doc """

@@ -11,4 +11,8 @@
     <p class="item-rarity">Rarity: <%= @prize.item.rarity %></p>
     <hr>
     <p class="item-rarity">Weight: <%= @prize.weight %></p>
+    <hr>
+    <%= link "Edit", to: Routes.prize_path(@conn, :edit, @prize) %>
+    <br>
+    <%= link "Delete", to: Routes.prize_path(@conn, :delete, @prize), method: :delete, data: [confirm: "Are you sure you want to delete '#{@prize.item.name}' from this prize pool?'"] %>
 </div>

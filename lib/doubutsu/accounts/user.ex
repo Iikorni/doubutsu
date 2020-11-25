@@ -10,6 +10,7 @@ defmodule Doubutsu.Accounts.User do
     field :role, :integer
     has_one :credential, Credential
     has_one :inventory, Doubutsu.Things.Inventory
+    has_one :owner, Doubutsu.Pets.Owner
 
     timestamps()
   end
