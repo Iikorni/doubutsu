@@ -1,0 +1,20 @@
+<div class="scratchcard">
+    <div class="row row-1">
+        <img class="col-start" src="/images/scratchcard/scratch_bar.png" />
+        <img class="col-1" src="/images/scratchcard/scratch_spot.png" />
+        <img class="col-2" src="/images/scratchcard/scratch_spot.png" />
+        <img class="col-3" src="/images/scratchcard/scratch_spot.png" />
+    </div>
+    <div class="row row-2">
+        <img class="col-start" src="/images/scratchcard/scratch_bar.png" />
+        <img class="col-1" src="/images/scratchcard/scratch_spot.png" />
+        <img class="col-2" src="/images/scratchcard/scratch_spot.png" />
+        <img class="col-3" src="/images/scratchcard/scratch_spot.png" />
+    </div>
+    <div class="row row-3">
+        <img class="col-start" src="/images/scratchcard/scratch_bar.png" />
+        <img class="col-1" src="/images/scratchcard/scratch_spot.png" />
+        <img class="col-2" src="/images/scratchcard/scratch_spot.png" />
+        <img class="col-3" src="/images/scratchcard/scratch_spot.png" />
+    </div>
+</div>

@@ -6,8 +6,9 @@
     <p>A big sign says:</p>
     <h2>200 ¥ per can</h2>
     <hr>
+    <br>
     <%= if Doubutsu.Things.has_the_cash(@current_user.inventory, 200) do %>
-    <%= form_for @conn, Routes.location_path(@conn, :vending_post), [as: :request], fn f -> %>
+    <%= form_for @conn, Routes.location_path(@conn, :vending_machine_result), [as: :request], fn f -> %>
         <%= hidden_input f, :token, value: @token%>
         <div class="input-group">
             <%= label f, :flavour, "Button To Press:" %>
@@ -20,5 +21,13 @@
     <% end %>
     <% else %>
         <p>Whoops! It looks like you don't have enough money to use the vending machine...</p>
+    <% end %>
+    <br>
+    <hr>
+    <br>
+    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :get], fn f -> %>
+        <div class="input-group">
+            <%= submit "Back to the Mall" %>
+        </div>
     <% end %>
 </div>

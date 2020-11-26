@@ -1,0 +1,16 @@
+<h1>Mall</h1>
+<div class="centered">
+    <p>The Ichiban Mall is a large, spacious area, bustling with activity and shops peddling their wares.</p>
+    <p>A directory is posted in the main foyer:</p>
+    <%=img_tag("/images/mall_map.png", width: 350, usemap: "#map") %>
+    <map name="map">
+        <area shape="rect" coords="59, 99, 92, 132" href="#" />
+        <area shape="rect" coords="115, 99, 148, 132" href="#" />
+        <area shape="rect" coords="197, 95, 230, 128" href="#" />
+        <area shape="rect" coords="197, 137, 230, 170" href="#" />
+        <area shape="rect" coords="197, 182, 230, 215" href="#" />
+        <area shape="rect" coords="74, 205, 110, 241" href="#" />
+        <area shape="rect" coords="125, 240, 158, 274" href="#" />
+        <area shape="rect" coords="170, 79, 179, 89" href="<%= Routes.location_path(@conn, :vending_machine) %>" />
+    </map>
+</div>

@@ -13,7 +13,17 @@
         <p>The vending machine whirrs and sputters, but spits nothing out - except for your money.</p>
         <p>Maybe try again later?</p>
     <% end %>
-    <%= form_for @conn, Routes.location_path(@conn, :vending_get), [method: :get], fn _ -> %>
-        <%= submit "Make Another Purchase" %>
+    <%= form_for @conn, Routes.location_path(@conn, :vending_machine), [method: :get], fn _ -> %>
+        <div class="input-group">
+            <%= submit "Make Another Purchase" %>
+        </div>
+    <% end %>
+    <br>
+    <hr>
+    <br>
+    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :get], fn f -> %>
+        <div class="input-group">
+            <%= submit "Back to the Mall" %>
+        </div>
     <% end %>
 </div>

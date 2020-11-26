@@ -10,10 +10,11 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Food"})
-Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Book"})
-Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Potion"})
-Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Gift"})
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Food", functional_type: :food})
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Book", functional_type: :book})
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Potion", functional_type: :potion})
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Gift", functional_type: :gift})
+Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Paintbrush", functional_type: :paintbrush})
 
 Doubutsu.Repo.insert!(%Doubutsu.Pets.Breed{slug: "cat", name: "Neko", plural: "Nekos", description: "Nekos are fun-loving creatures, dedicated to enjoying life as much as they can, whether that be basking in the sun, playing with toys, or taking long naps."})
 Doubutsu.Repo.insert!(%Doubutsu.Pets.Breed{slug: "skookum", name: "Skookum", plural: "Skookums", description: "Skookums are creatures seemingly from your worst nightmares, but in reality they are kind, gentle folk, who only want to be treated with love and care."})

@@ -4,7 +4,7 @@ defmodule Doubutsu.Things.Type do
 
   schema "types" do
     field :name, :string
-
+    field :functional_type, Ecto.Enum, values: [:nothing, :food, :book, :potion, :paintbrush]
     has_many :items, Doubutsu.Things.Item
 
     timestamps()
