@@ -1,0 +1,19 @@
+<h1>Create a Pet</h1>
+<div class="loc-description">
+    <p>Here, you'll choose your new pet's breed.</p>
+    <%= form_for @conn, Routes.pet_path(@conn, :new_pet), fn f -> %>
+        <div class="pet-breed-selection">
+            <%= for breed <- @breeds do %>
+                <div class="pet-breed">
+                    <%= pet_img("blue", breed.slug) %>
+                    <b><%= breed.name %></b>
+                    <%= radio_button f, :breed, breed.slug %>
+                </div>
+            <% end %>
+        </div>
+        <br>
+        <div class="input-group">
+            <%= submit "Next"%>
+        </div>
+    <% end %>
+</div>

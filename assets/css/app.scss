@@ -22,14 +22,34 @@
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
+  padding: 0;
+  border: 1px solid #af0f0c;
+  margin-top: 1em;
+  .header {
+    background-color: #af0f0c;
+    width: 100%;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    color: #ffe6e6;
+    font-size: 1.5em;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+  }
+  .info {
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
 }
+
 .alert p {
   margin-bottom: 0;
   margin-top: 0;
 }
+
 .alert:empty {
   display: none;
 }
+
 .invalid-feedback {
   color: #a94442;
   display: block;
@@ -264,4 +284,36 @@ a:visited {
   width:90%;
   margin-left:auto;
   margin-right: auto;
+}
+
+.pet-information {
+  text-align: start;
+  font-size: 0.75em;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pet-breed-selection {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pet-breed {
+  text-align: center;
+  background-color: #AAA;
+  margin-left: 1em;
+  margin-right: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  * {
+    display: block;
+  }
+  img, input {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

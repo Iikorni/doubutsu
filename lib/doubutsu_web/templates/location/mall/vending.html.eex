@@ -25,7 +25,7 @@
     <br>
     <hr>
     <br>
-    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :get], fn f -> %>
+    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :get], fn _ -> %>
         <div class="input-group">
             <%= submit "Back to the Mall" %>
         </div>

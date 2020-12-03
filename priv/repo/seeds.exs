@@ -18,6 +18,8 @@ Doubutsu.Repo.insert!(%Doubutsu.Things.Type{name: "Paintbrush", functional_type:
 
 Doubutsu.Repo.insert!(%Doubutsu.Pets.Breed{slug: "cat", name: "Neko", plural: "Nekos", description: "Nekos are fun-loving creatures, dedicated to enjoying life as much as they can, whether that be basking in the sun, playing with toys, or taking long naps."})
 Doubutsu.Repo.insert!(%Doubutsu.Pets.Breed{slug: "skookum", name: "Skookum", plural: "Skookums", description: "Skookums are creatures seemingly from your worst nightmares, but in reality they are kind, gentle folk, who only want to be treated with love and care."})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.Breed{slug: "flutter", name: "Flutterby", plural: "Flutterbys", description: "Flutterbys are creatures of the sky, rejoicing in wide open spaces to zip and zoom all across. Energetic and always full of spunk, these critters never tire."})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.Breed{slug: "dino", name: "Dyno", plural: "Dynos", description: "Dynos are, despite their somewhat fearsome appearance, kind and gentle (not to mention herbivorous) creatures. They frolic amongst tall trees, and enjoy spaces where they won't hit their head."})
 
 Doubutsu.Repo.insert!(%Doubutsu.Pets.Colour{slug: "blue", name: "Blue"})
 Doubutsu.Repo.insert!(%Doubutsu.Pets.Colour{slug: "red", name: "Red"})
@@ -42,3 +44,24 @@ Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 2, colour_id: 4})
 Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 2, colour_id: 5})
 Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 2, colour_id: 6})
 Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 2, colour_id: 7})
+
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 3, colour_id: 1})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 3, colour_id: 2})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 3, colour_id: 3})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 3, colour_id: 4})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 3, colour_id: 5})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 3, colour_id: 6})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 3, colour_id: 7})
+
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 4, colour_id: 1})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 4, colour_id: 2})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 4, colour_id: 3})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 4, colour_id: 4})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 4, colour_id: 5})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 4, colour_id: 6})
+Doubutsu.Repo.insert!(%Doubutsu.Pets.BreedColour{breed_id: 4, colour_id: 7})
+
+Doubutsu.Repo.insert!(%Doubutsu.Games.ScratchType{slug: "dd", name: "Destiny Dosh"})
+Doubutsu.Repo.insert!(%Doubutsu.Games.ScratchType{slug: "ff", name: "Fortunate Fireworks"})
+Doubutsu.Repo.insert!(%Doubutsu.Games.ScratchType{slug: "ss", name: "Serendipitous Scales"})
+Doubutsu.Repo.insert!(%Doubutsu.Games.ScratchType{slug: "kk", name: "Karma Kash"})

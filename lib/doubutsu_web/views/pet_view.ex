@@ -33,6 +33,10 @@ defmodule DoubutsuWeb.PetView do
   end
 
   def pet_img(pet) do
-    img_tag("/images/pets/#{pet.breed.slug}/#{pet.colour.slug}.png")
+    pet_img(pet.colour.slug, pet.breed.slug)
+  end
+
+  def pet_img(colour_slug, breed_slug) do
+    img_tag("/images/pets/#{breed_slug}/#{colour_slug}.png")
   end
 end

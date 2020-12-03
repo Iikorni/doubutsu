@@ -39,6 +39,13 @@ defmodule Doubutsu.Games do
   """
   def get_scratch_type!(id), do: Repo.get!(ScratchType, id)
 
+  def get_scratch_type_by_slug(slug) do
+    case Repo.get_by(ScratchType, slug: slug) do
+      nil -> {:error, nil}
+      scratch_type -> {:ok, Repo.preload(scratch_type, :item)}
+    end
+  end
+
   @doc """
   Creates a scratch_type.
 

@@ -27,13 +27,11 @@ defmodule Doubutsu.Things.Item do
     |> handle_image(attrs)
   end
 
-  def handle_image(item, attrs) do
+  def handle_image(item, _attrs) do
     if upload = get_change(item, :picture_file) do
-      IO.puts("Hey, listen!")
       File.cp(upload.path, Path.expand("./uploads/items/#{upload.filename}"))
       put_change(item, :picture, upload.filename)
     else
-      IO.puts("No item :(")
       item
     end
   end

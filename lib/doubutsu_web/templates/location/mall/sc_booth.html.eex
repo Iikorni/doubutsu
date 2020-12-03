@@ -7,15 +7,16 @@
     <ul>
         <li>Destiny Dosh — (100 ¥)</li>
         <li>Fortunate Fireworks — (500 ¥)</li>
-        <li><s>Serendipitous Scales  — (1000 ¥)</s> (NOT YET AVAILABLE)</li>
-        <li><s>Karma Kash  — (1000 ¥)</s> (NOT YET AVAILABLE)</li>
+        <li>Serendipitous Scales  — (1000 ¥)</li>
+        <li>Karma Kash  — (1000 ¥)</li>
         <li><s>Future Finances  — (2000 ¥)</s> (NOT YET AVAILABLE)</li>
     </ul>
     <hr>
     <br>
     <%= render DoubutsuWeb.LocationView, "mall/_scratchcard.html" %>
     <br>
-    <%= form_for @conn, Routes.location_path(@conn, :scratchcard_purchase), fn f -> %>
+    <%= form_for @conn, Routes.location_path(@conn, :scratchcard_purchase), [as: :request], fn f -> %>
+        <%= hidden_input f, :token, value: @token%>
         <div class="input-group">
             <%= select f, :scratch_id, Enum.map(@scratch_types, &{"#{&1.name} - (#{&1.item.price} ¥)", &1.slug}), onchange: "on_sc_select();"%>
             <%= error_tag f, :scratch_id %>
@@ -28,8 +29,7 @@
         window.onload = on_sc_select();
 
         function on_sc_select() {
-            console.log("aaaa");
-            sc = document.querySelector("#scratch_id");
+            sc = document.querySelector("#request_scratch_id");
             slug = sc.selectedOptions[0].value;
             document.querySelector("div.row.row-1 > img.col-start").src = "/images/scratchcard/" + slug + "_1.png";
             document.querySelector("div.row.row-2 > img.col-start").src = "/images/scratchcard/" + slug + "_2.png";

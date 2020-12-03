@@ -10,10 +10,45 @@ defmodule DoubutsuWeb.LocationController do
     render(conn, "mall/sc_booth.html", title: "Scratchard Booth", scratch_types: scratch_types)
   end
 
-  def scratchcard_purchase(conn, %{"scratch_id" => scratch_id}) do
-    conn
-    |> put_flash(:error, "#{scratch_id}")
-    |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+  def scratchcard_purchase(conn, %{"request" => request}) do
+    user = conn.assigns[:current_user]
+    case Games.get_scratch_type_by_slug(request["scratch_id"]) do
+      {:ok, scratch_type} ->
+        if not Things.has_the_cash(user.inventory, scratch_type.item.price) do
+          conn
+          |> put_session(:purchase_token, nil)
+          |> put_flash(:error, "Whoops, it looks like you don't have enough money...")
+          |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+        else
+          token = get_session(conn, :purchase_token)
+          if token && request["token"] == token do
+            case Things.create_instance_from_item_inventory(scratch_type.item, user.inventory) do
+              {:ok, _} ->
+                Things.subtract_cost(user.inventory, scratch_type.item.price)
+                conn
+                |> put_flash(:info, "Thank you very much for your purchase of a #{scratch_type.name} ticket!")
+                |> put_session(:purchase_token, nil)
+                |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+              {:error, _} ->
+                conn
+                |> put_flash(:error, "Your purchase was unssuccesful, for whatever reason...")
+                |> put_session(:purchase_token, nil)
+                |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+            end
+          else
+            conn
+            |> put_session(:purchase_token, nil)
+            |> put_flash(:error, "Hmm. We're not sure how you got here...")
+            |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+          end
+          conn
+        end
+      {:error, _} ->
+        conn
+        |> put_session(:purchase_token, nil)
+        |> put_flash(:error, "You didn't select a scratchcard!")
+        |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+    end
   end
 
   def mall(conn, _) do
@@ -21,15 +56,11 @@ defmodule DoubutsuWeb.LocationController do
   end
 
   def vending_machine(conn, _) do
-    token = Doubutsu.Util.gen_token()
-    conn
-    |> put_session(:vend_token, token)
-    |> render("mall/vending.html", title: "Vending Machine", token: token)
+    render(conn, "mall/vending.html", title: "Vending Machine")
   end
 
   def vending_machine_fallback(conn, _) do
-    conn
-    |> redirect(to: Routes.location_path(conn, :vending_machine))
+    redirect(conn, to: Routes.location_path(conn, :vending_machine))
   end
 
   def vending_machine_result(conn, %{"request" => request}) do
@@ -39,7 +70,7 @@ defmodule DoubutsuWeb.LocationController do
       |> put_flash(:error, "Whoops, it looks like you don't have enough money...")
       |> redirect(to: Routes.location_path(conn, :vending_machine))
     else
-      token = get_session(conn, :vend_token)
+      token = get_session(conn, :purchase_token)
       if token && request["token"] == token do
         case Prizes.get_prize_from_prize_pool(Prizes.get_prize_pool_by_name!("vending_machine")) do
           {:ok, prize} ->
@@ -47,16 +78,16 @@ defmodule DoubutsuWeb.LocationController do
               {:ok, _} ->
                 Things.subtract_cost(user.inventory, 200)
                 conn
-                |> put_session(:vend_token, nil)
+                |> put_session(:purchase_token, nil)
                 |> render("mall/vending_result.html", title: "Vending Machine", prize: prize)
               {:error, _} ->
                 conn
-                |> put_session(:vend_token, nil)
+                |> put_session(:purchase_token, nil)
                 |> render("mall/vending_result.html", title: "Vending Machine", prize: nil)
             end
           {:none, nil} ->
             conn
-            |> put_session(:vend_token, nil)
+            |> put_session(:purchase_token, nil)
             |> render("mall/vending_result.html", title: "Vending Machine", prize: nil)
         end
       else

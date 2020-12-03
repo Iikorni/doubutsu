@@ -24,10 +24,15 @@ defmodule DoubutsuWeb.Router do
     plug :auth_admin
   end
 
+  pipeline :purchase_token_gen do
+    plug DoubutsuWeb.PurchaseToken
+  end
+
   scope "/", DoubutsuWeb do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/test", PageController, :flash_test
     get "/register", UserController, :new
     post "/register", UserController, :create
     get "/login", SessionController, :new
@@ -38,12 +43,16 @@ defmodule DoubutsuWeb.Router do
   scope "/mall", DoubutsuWeb do
     pipe_through [:browser, :needs_auth]
 
-    get "/booth", LocationController, :scratchcard_booth
-    post "/booth", LocationController, :scratchcard_purchase
     get "/", LocationController, :mall
-    get "/vending", LocationController, :vending_machine
+
+
+    post "/booth", LocationController, :scratchcard_purchase
     get "/vending_result", LocationController, :vending_machine_fallback
     post "/vending_result", LocationController, :vending_machine_result
+
+    pipe_through [:purchase_token_gen]
+    get "/booth", LocationController, :scratchcard_booth
+    get "/vending", LocationController, :vending_machine
   end
 
   scope "/users", DoubutsuWeb do
@@ -65,7 +74,8 @@ defmodule DoubutsuWeb.Router do
   scope "/pets", DoubutsuWeb do
     pipe_through :browser
 
-    resources "/", PetController, only: [:show]
+    resources "/", PetController, only: [:show, :new]
+    post "/new_pet", PetController, :new_pet
   end
 
   scope "/items", DoubutsuWeb do

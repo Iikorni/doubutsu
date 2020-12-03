@@ -13,7 +13,7 @@
       <nav role="navigation">
         <ul>
           <li class="brand"><a href="/">Doubutsu</a></li>
-          <li><a href="#">something</a></li>
+          <li><%= link "create a pet", to: Routes.pet_path(@conn, :new) %></li>
           <li><a href="#">something</a></li>
           <li><a href="#">something</a></li>
           <li><a href="#">something</a></li>
@@ -33,19 +33,20 @@
     <main role="main">
       <div class="container">
         <div class="sidebar">
-          <div class="pet-container">
-            <p><b><%= @current_user.owner.active_pet.name %></b></p>
-            <%= PetView.pet_img(@current_user.owner.active_pet) %>
-            <p><b>Breed</b>: <%= @current_user.owner.active_pet.breed.name %></p>
-            <p><b>Health</b>: <%= @current_user.owner.active_pet.health %>/<%= @current_user.owner.active_pet.max_health %></p>
-            <p><b>Hunger</b>: <%= PetView.hunger_str(@current_user.owner.active_pet.hunger) %></p>
-            <p><b>Age</b>: <%= PetView.age_str(@current_user.owner.active_pet.inserted_at) %></p>
-            <p><b>Level</b>: <%= @current_user.owner.active_pet.level %></p>
-          </div>
+          <%= if @current_user do %>
+            <%= render DoubutsuWeb.LayoutView, "_pet.html", conn: @conn, active_pet: @current_user.owner.active_pet %>
+          <% end %>
         </div>
         <div class="content">
           <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-          <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+          <%= if get_flash(@conn, :error) do %>
+            <div class="alert alert-danger" role="alert">
+              <div class="header">Oops!</div>
+              <div class="info">
+                <%= get_flash(@conn, :error) %>
+              </div>
+            </div>
+          <% end %>
           <%= @inner_content %>
           <br>
           <br>

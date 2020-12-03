@@ -1,0 +1,11 @@
+<div class="pet-container">
+    <p><b><%= @active_pet.name %></b></p>
+    <%= PetView.pet_img(@active_pet) %>
+    <div class="pet-information">
+        <p><b>Breed</b>: <%= @active_pet.breed.name %></p>
+        <p><b>Health</b>: <%= @active_pet.health %>/<%= @active_pet.max_health %></p>
+        <p><b>Hunger</b>: <%= PetView.hunger_str(@active_pet.hunger) %></p>
+        <p><b>Age</b>: <%= PetView.age_str(@active_pet.inserted_at) %></p>
+        <p><b>Level</b>: <%= @active_pet.level %></p>
+    </div>
+</div>

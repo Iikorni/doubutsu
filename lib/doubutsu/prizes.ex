@@ -112,7 +112,7 @@ defmodule Doubutsu.Prizes do
     PrizePool.changeset(prize_pool, attrs)
   end
 
-  def weighted_selection([{choice, weight} | tail], idx) when idx < weight, do: choice
+  def weighted_selection([{choice, weight} | _tail], idx) when idx < weight, do: choice
   def weighted_selection([{_, weight} | tail], idx), do: weighted_selection(tail, idx - weight)
 
   def get_prize_from_prize_pool(prize_pool) do

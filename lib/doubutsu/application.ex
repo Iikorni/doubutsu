@@ -14,9 +14,10 @@ defmodule Doubutsu.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Doubutsu.PubSub},
       # Start the Endpoint (http/https)
-      DoubutsuWeb.Endpoint
+      DoubutsuWeb.Endpoint,
       # Start a worker by calling: Doubutsu.Worker.start_link(arg)
       # {Doubutsu.Worker, arg}
+      {Doubutsu.Scheduler, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

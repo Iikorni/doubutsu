@@ -5,7 +5,7 @@ defmodule DoubutsuWeb.Auth do
     Keyword.fetch!(opts, :repo)
   end
 
-  def call(conn, repo) do
+  def call(conn, _repo) do
     user_id = get_session(conn, :user_id)
     user = user_id && Doubutsu.Accounts.get_user!(user_id)
     assign(conn, :current_user, user)
@@ -18,7 +18,7 @@ defmodule DoubutsuWeb.Auth do
     |> configure_session(renew: true)
   end
 
-  def logout(conn, user) do
+  def logout(conn, _user) do
     configure_session(conn, drop: true)
   end
 
