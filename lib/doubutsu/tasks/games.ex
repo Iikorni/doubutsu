@@ -1,22 +1,26 @@
 defmodule Doubutsu.Tasks.Games do
 
-  def try_clear_lock(lock) do
+  def try_clear_lock(multi, lock) do
     if lock.count > 0 do
       lock_type = lock.game_lock_type
-      lock_duration = lock_type.lock_duration
-      last_lock_time = lock.last_lock_time
-      if NaiveDateTime.diff(NaiveDateTime.local_now(), last_lock_time) >= lock_duration do
-        Doubutsu.Games.change_game_lock(lock)
-        |> Ecto.Changeset.put_change(:count, 0)
-        |> Doubutsu.Repo.update!()
+      if Doubutsu.Games.lock_needs_updating(lock, lock_type) do
+        changeset = Ecto.Changeset.put_change(Doubutsu.Games.change_game_lock(lock), :count, 0)
+        Ecto.Multi.update(multi, {:lock, lock.id}, changeset)
+      else
+        multi
       end
+    else
+      multi
     end
   end
 
   def clear_game_locks() do
     locks = Doubutsu.Games.list_game_locks()
-    for lock <- locks do
-      try_clear_lock(lock)
-    end
+
+    Doubutsu.Repo.transaction(
+      Enum.reduce(locks, Ecto.Multi.new(), fn lock, multi ->
+        try_clear_lock(multi, lock)
+      end)
+      )
   end
 end
