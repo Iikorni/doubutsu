@@ -3,6 +3,11 @@ defmodule DoubutsuWeb.PetController do
 
   alias Doubutsu.Pets
 
+  def my_pets(conn, _params) do
+    current_owner = conn.assigns[:current_user].owner
+    render(conn, "pet_list.html", title: "My Pets", pets: current_owner.pets)
+  end
+
   def show(conn, %{"id" => id}) do
     pet = Pets.get_pet!(id)
     render(conn, "show.html", title: "Viewing Pet", pet: pet)

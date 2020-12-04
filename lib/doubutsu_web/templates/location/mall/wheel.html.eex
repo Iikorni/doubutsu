@@ -1,0 +1,68 @@
+<div class="centered">
+    <canvas id="wheel" width="512" height="512"></canvas>
+</div>
+<script>
+    var img = new Image();
+    var cursor = new Image();
+    var ctx = document.getElementById('wheel').getContext('2d');
+    var i = wheel_position_to_degrees(0);
+    var goal_position = Math.floor(Math.random() * 16);
+    var goal = wheel_position_to_degrees(goal_position);
+    var degree = 4;
+    var passes_left = 10;
+
+    var img_done = false;
+    var cursor_done = false;
+
+    img.addEventListener('load', function() {
+        img_done = true;
+        try_start_animation();
+    }, false);
+    cursor.addEventListener('load', function() {
+        cursor_done = true;
+        try_start_animation();
+    }, false);
+    img.src = 'wheel.png';
+    cursor.src = 'wheel_cursor.png';
+
+    function try_start_animation() {
+        if(cursor_done && img_done) {
+            window.requestAnimationFrame(draw);
+        }
+    }
+
+    function increment_wheel_degree() {
+        i += degree
+        if(passes_left > 0 && i >= 360) {
+            i -= 360;
+            passes_left--;
+            if(passes_left > 2 && passes_left <= 5) {
+                degree = 3
+            } else if(passes_left > 1 && passes_left <= 2) {
+                degree = 2
+            } else if(passes_left == 1) {
+                degree = 1;
+            }
+        } else if(passes_left == 0 && Math.abs(i - goal) <= 1) {
+            i = wheel_position_to_degrees(goal_position);
+            degree = 0;
+        }
+    }
+
+    function wheel_position_to_degrees(position) {
+        return (11.4*(position*2) - (0.16*((position*2)-1))) + 11.4;
+    }
+
+    function draw() {
+        ctx.globalCompositeOperation = 'destination-over';
+        ctx.clearRect(0, 0, 512, 512);
+        ctx.drawImage(cursor, 0, 0);
+        ctx.save();
+        ctx.translate(256, 256);
+        ctx.rotate((Math.PI/180) * i);
+        ctx.drawImage(img, -256, -256);
+        ctx.restore();
+        increment_wheel_degree();
+        window.requestAnimationFrame(draw);
+    }
+</script>

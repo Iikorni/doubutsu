@@ -18,7 +18,8 @@ defmodule Doubutsu.Pets do
 
   """
   def list_breeds do
-    Repo.all(Breed)
+    Repo.all(from b in Breed, order_by: [asc: :id])
+    |> Repo.preload(:display_colour)
   end
 
   @doc """

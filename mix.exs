@@ -47,7 +47,9 @@ defmodule Doubutsu.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:comeonin, "~> 5.3"},
       {:argon2_elixir, "~> 2.3"},
-      {:quantum, "~> 3.0"}
+      {:quantum, "~> 3.0"},
+      {:quantum_storage_persistent_ets, "~> 1.0"},
+      {:ecto_psql_extras, "~> 0.4.1"}
     ]
   end
 

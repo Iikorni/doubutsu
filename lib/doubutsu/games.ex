@@ -206,4 +206,247 @@ defmodule Doubutsu.Games do
   def change_scratch_prize(%ScratchPrize{} = scratch_prize, attrs \\ %{}) do
     ScratchPrize.changeset(scratch_prize, attrs)
   end
+
+  alias Doubutsu.Games.GameLockType
+
+  @doc """
+  Returns the list of game_lock_types.
+
+  ## Examples
+
+      iex> list_game_lock_types()
+      [%GameLockType{}, ...]
+
+  """
+  def list_game_lock_types do
+    Repo.all(GameLockType)
+  end
+
+  @doc """
+  Gets a single game_lock_type.
+
+  Raises `Ecto.NoResultsError` if the Game lock type does not exist.
+
+  ## Examples
+
+      iex> get_game_lock_type!(123)
+      %GameLockType{}
+
+      iex> get_game_lock_type!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_game_lock_type!(id), do: Repo.get!(GameLockType, id)
+
+  def get_game_lock_type_by_name!(name) do
+    lock_type = Repo.one(from lock_type in GameLockType, where: lock_type.name == ^name)
+    if lock_type == nil do
+      raise "bad (unknown) lock type #{name}"
+    end
+    lock_type
+  end
+
+  @doc """
+  Creates a game_lock_type.
+
+  ## Examples
+
+      iex> create_game_lock_type(%{field: value})
+      {:ok, %GameLockType{}}
+
+      iex> create_game_lock_type(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_game_lock_type(attrs \\ %{}) do
+    %GameLockType{}
+    |> GameLockType.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a game_lock_type.
+
+  ## Examples
+
+      iex> update_game_lock_type(game_lock_type, %{field: new_value})
+      {:ok, %GameLockType{}}
+
+      iex> update_game_lock_type(game_lock_type, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_game_lock_type(%GameLockType{} = game_lock_type, attrs) do
+    game_lock_type
+    |> GameLockType.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a game_lock_type.
+
+  ## Examples
+
+      iex> delete_game_lock_type(game_lock_type)
+      {:ok, %GameLockType{}}
+
+      iex> delete_game_lock_type(game_lock_type)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_game_lock_type(%GameLockType{} = game_lock_type) do
+    Repo.delete(game_lock_type)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking game_lock_type changes.
+
+  ## Examples
+
+      iex> change_game_lock_type(game_lock_type)
+      %Ecto.Changeset{data: %GameLockType{}}
+
+  """
+  def change_game_lock_type(%GameLockType{} = game_lock_type, attrs \\ %{}) do
+    GameLockType.changeset(game_lock_type, attrs)
+  end
+
+  alias Doubutsu.Games.GameLock
+
+  @doc """
+  Returns the list of game_lock.
+
+  ## Examples
+
+      iex> list_game_locks()
+      [%GameLocks{}, ...]
+
+  """
+  def list_game_locks do
+    Repo.all(GameLock)
+    |> Repo.preload(:game_lock_type)
+  end
+
+  @doc """
+  Gets a single game_lock.
+
+  Raises `Ecto.NoResultsError` if the Game locks does not exist.
+
+  ## Examples
+
+      iex> get_game_lock!(123)
+      %GameLock{}
+
+      iex> get_game_lock!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_game_lock!(id), do: Repo.get!(GameLock, id)
+
+  @doc """
+  Creates a game_lock.
+
+  ## Examples
+
+      iex> create_game_lock(%{field: value})
+      {:ok, %GameLocks{}}
+
+      iex> create_game_lock(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_game_lock(attrs \\ %{}) do
+    %GameLock{}
+    |> GameLock.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a game_lock.
+
+  ## Examples
+
+      iex> update_game_lock(game_lock, %{field: new_value})
+      {:ok, %GameLocks{}}
+
+      iex> update_game_lock(game_lock, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_game_lock(%GameLock{} = game_lock, attrs) do
+    game_lock
+    |> GameLock.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a game_lock.
+
+  ## Examples
+
+      iex> delete_game_lock(game_lock)
+      {:ok, %GameLocks{}}
+
+      iex> delete_game_lock(game_lock)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_game_lock(%GameLock{} = game_lock) do
+    Repo.delete(game_lock)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking game_lock changes.
+
+  ## Examples
+
+      iex> change_game_lock(game_lock)
+      %Ecto.Changeset{data: %GameLocks{}}
+
+  """
+  def change_game_lock(%GameLock{} = game_lock, attrs \\ %{}) do
+    GameLock.changeset(game_lock, attrs)
+  end
+
+  def is_game_locked(name, user) do
+    lock_type = get_game_lock_type_by_name!(name)
+
+    lock = Repo.one(from(
+      lock in GameLock,
+      where: lock.user_id == ^user.id,
+      where: lock.game_lock_type_id == ^lock_type.id
+      ))
+
+    lock && lock_type.max_count <= lock.count
+  end
+
+  def try_increment_lock(name, user) do
+    lock_type = get_game_lock_type_by_name!(name)
+
+    lock = Repo.one(from(
+      lock in GameLock,
+      where: lock.user_id == ^user.id,
+      where: lock.game_lock_type_id == ^lock_type.id
+      ))
+
+    if lock == nil do
+      change_game_lock(%GameLock{})
+      |> Ecto.Changeset.put_change(:user_id, user.id)
+      |> Ecto.Changeset.put_change(:game_lock_type_id, lock_type.id)
+      |> Ecto.Changeset.put_change(:count, 1)
+      |> Ecto.Changeset.put_change(:last_lock_time, NaiveDateTime.local_now())
+      |> Repo.insert!()
+      :ok
+    else
+      if lock_type.max_count <= lock.count do
+        :error
+      else
+        change_game_lock(lock)
+        |> Ecto.Changeset.put_change(:count, lock.count + 1)
+        |> Ecto.Changeset.put_change(:last_lock_time, if lock.count == 0 do NaiveDateTime.local_now() else lock.last_lock_time end)
+        |> Repo.update!()
+        :ok
+      end
+    end
+  end
 end

@@ -105,7 +105,7 @@ defmodule DoubutsuWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: DoubutsuWeb.Telemetry
+      live_dashboard "/dashboard", metrics: DoubutsuWeb.Telemetry, ecto_repos: [Doubutsu.Repo]
     end
   end
 end

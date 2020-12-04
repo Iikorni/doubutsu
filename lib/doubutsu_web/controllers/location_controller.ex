@@ -12,42 +12,49 @@ defmodule DoubutsuWeb.LocationController do
 
   def scratchcard_purchase(conn, %{"request" => request}) do
     user = conn.assigns[:current_user]
-    case Games.get_scratch_type_by_slug(request["scratch_id"]) do
-      {:ok, scratch_type} ->
-        if not Things.has_the_cash(user.inventory, scratch_type.item.price) do
-          conn
-          |> put_session(:purchase_token, nil)
-          |> put_flash(:error, "Whoops, it looks like you don't have enough money...")
-          |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
-        else
-          token = get_session(conn, :purchase_token)
-          if token && request["token"] == token do
-            case Things.create_instance_from_item_inventory(scratch_type.item, user.inventory) do
-              {:ok, _} ->
-                Things.subtract_cost(user.inventory, scratch_type.item.price)
-                conn
-                |> put_flash(:info, "Thank you very much for your purchase of a #{scratch_type.name} ticket!")
-                |> put_session(:purchase_token, nil)
-                |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
-              {:error, _} ->
-                conn
-                |> put_flash(:error, "Your purchase was unssuccesful, for whatever reason...")
-                |> put_session(:purchase_token, nil)
-                |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
-            end
-          else
+    if Games.is_game_locked("scratchcard", user) do
+      conn
+      |> put_flash(:error, "You can only buy a scratchcard once every six hours!")
+      |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+    else
+      case Games.get_scratch_type_by_slug(request["scratch_id"]) do
+        {:ok, scratch_type} ->
+          if not Things.has_the_cash(user.inventory, scratch_type.item.price) do
             conn
             |> put_session(:purchase_token, nil)
-            |> put_flash(:error, "Hmm. We're not sure how you got here...")
+            |> put_flash(:error, "Whoops, it looks like you don't have enough money...")
             |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+          else
+            token = get_session(conn, :purchase_token)
+            if token && request["token"] == token do
+              case Things.create_instance_from_item_inventory(scratch_type.item, user.inventory) do
+                {:ok, _} ->
+                  Games.try_increment_lock("scratchcard", user)
+                  Things.subtract_cost(user.inventory, scratch_type.item.price)
+                  conn
+                  |> put_flash(:info, "Thank you very much for your purchase of a #{scratch_type.name} ticket!")
+                  |> put_session(:purchase_token, nil)
+                  |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+                {:error, _} ->
+                  conn
+                  |> put_flash(:error, "Your purchase was unssuccesful, for whatever reason...")
+                  |> put_session(:purchase_token, nil)
+                  |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+              end
+            else
+              conn
+              |> put_session(:purchase_token, nil)
+              |> put_flash(:error, "Hmm. We're not sure how you got here...")
+              |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+            end
+            conn
           end
+        {:error, _} ->
           conn
-        end
-      {:error, _} ->
-        conn
-        |> put_session(:purchase_token, nil)
-        |> put_flash(:error, "You didn't select a scratchcard!")
-        |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+          |> put_session(:purchase_token, nil)
+          |> put_flash(:error, "You didn't select a scratchcard!")
+          |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
+      end
     end
   end
 

@@ -28,7 +28,8 @@ config :phoenix, :json_library, Jason
 
 config :doubutsu, Doubutsu.Scheduler,
   jobs: [
-    {"@daily", {Doubutsu.Tasks.Pets, :hunger_tick, []}}
+    {"@daily", {Doubutsu.Tasks.Pets, :hunger_tick, []}},
+    {"*/1 * * * *", {Doubutsu.Tasks.Games, :clear_game_locks, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom

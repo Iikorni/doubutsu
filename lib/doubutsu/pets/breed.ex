@@ -8,6 +8,7 @@ defmodule Doubutsu.Pets.Breed do
     field :plural, :string
     field :slug, :string
 
+    belongs_to :display_colour, Doubutsu.Pets.Colour
     has_many :breed_colours, Doubutsu.Pets.BreedColour
 
     timestamps()

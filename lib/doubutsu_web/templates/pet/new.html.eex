@@ -5,7 +5,7 @@
         <div class="pet-breed-selection">
             <%= for breed <- @breeds do %>
                 <div class="pet-breed">
-                    <%= pet_img("blue", breed.slug) %>
+                    <%= pet_img(breed.display_colour.slug, breed.slug) %>
                     <b><%= breed.name %></b>
                     <%= radio_button f, :breed, breed.slug %>
                 </div>
