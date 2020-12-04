@@ -1,29 +1,49 @@
+<br>
 <div class="centered">
-    <canvas id="wheel" width="512" height="512"></canvas>
+    <canvas id="wheel" width="600" height="600"></canvas>
 </div>
+<audio id="click" src="/sounds/click.wav" style="display:none;" preload="auto" controls="none" />
 <script>
     var img = new Image();
     var cursor = new Image();
-    var ctx = document.getElementById('wheel').getContext('2d');
+    var canvas = document.getElementById('wheel');
+    var ctx = canvas.getContext('2d');
     var i = wheel_position_to_degrees(0);
     var goal_position = Math.floor(Math.random() * 16);
     var goal = wheel_position_to_degrees(goal_position);
     var degree = 4;
     var passes_left = 10;
+    var since_start = 0;
+    var click_snd = document.getElementById("click");
 
     var img_done = false;
     var cursor_done = false;
 
+    canvas.addEventListener('click', function() {
+        try_start_animation();
+    })
     img.addEventListener('load', function() {
         img_done = true;
-        try_start_animation();
+        try_draw_loaded();
     }, false);
     cursor.addEventListener('load', function() {
         cursor_done = true;
-        try_start_animation();
+        try_draw_loaded();
     }, false);
-    img.src = 'wheel.png';
-    cursor.src = 'wheel_cursor.png';
+    img.src = '/images/wheel.png';
+    cursor.src = '/images/wheel_cursor.png';
+
+    function try_draw_loaded() {
+        if(cursor_done && img_done) {
+            ctx.font = '48px sans-serif';
+            ctx.fillStyle = 'red';
+            ctx.filter = 'blur(4px)';
+            ctx.drawImage(cursor, 44, 44);
+            ctx.drawImage(img, 44, 44);
+            ctx.filter = 'blur(0)';
+            ctx.fillText("Click to start the wheel", 44, 300);
+        }
+    }
 
     function try_start_animation() {
         if(cursor_done && img_done) {
@@ -33,6 +53,11 @@
 
     function increment_wheel_degree() {
         i += degree
+        since_start += degree;
+        if(since_start >= 22.5) {
+            since_start -= 22.5;
+            click_snd.cloneNode(false).play();
+        }
         if(passes_left > 0 && i >= 360) {
             i -= 360;
             passes_left--;
@@ -55,10 +80,10 @@
 
     function draw() {
         ctx.globalCompositeOperation = 'destination-over';
-        ctx.clearRect(0, 0, 512, 512);
-        ctx.drawImage(cursor, 0, 0);
+        ctx.clearRect(0, 0, 600, 600);
+        ctx.drawImage(cursor, 44, 44);
         ctx.save();
-        ctx.translate(256, 256);
+        ctx.translate(300, 300);
         ctx.rotate((Math.PI/180) * i);
         ctx.drawImage(img, -256, -256);
         ctx.restore();

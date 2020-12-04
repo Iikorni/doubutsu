@@ -45,7 +45,7 @@ defmodule DoubutsuWeb.Router do
 
     get "/", LocationController, :mall
 
-
+    get "/wheel", LocationController, :wheel
     post "/booth", LocationController, :scratchcard_purchase
     get "/vending_result", LocationController, :vending_machine_fallback
     post "/vending_result", LocationController, :vending_machine_result

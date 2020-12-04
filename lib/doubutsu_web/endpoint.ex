@@ -24,7 +24,7 @@ defmodule DoubutsuWeb.Endpoint do
     at: "/",
     from: :doubutsu,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css fonts images sounds js favicon.ico robots.txt)
 
   plug Plug.Static,
     at: "/images",

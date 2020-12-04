@@ -408,11 +408,11 @@ defmodule Doubutsu.Games do
     GameLock.changeset(game_lock, attrs)
   end
 
-  def lock_needs_updating(lock, lock_type) do
+  def lock_needs_updating?(lock, lock_type) do
     NaiveDateTime.diff(NaiveDateTime.local_now(), lock.last_lock_time) >= lock_type.lock_duration
   end
 
-  def is_game_locked(name, user) do
+  def game_locked?(name, user) do
     lock_type = get_game_lock_type_by_name!(name)
 
     lock = Repo.one(from(

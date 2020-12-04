@@ -10,9 +10,13 @@ defmodule DoubutsuWeb.LocationController do
     render(conn, "mall/sc_booth.html", title: "Scratchard Booth", scratch_types: scratch_types)
   end
 
+  def wheel(conn, _) do
+    render(conn, "mall/wheel.html", title: "Wheel")
+  end
+
   def scratchcard_purchase(conn, %{"request" => request}) do
     user = conn.assigns[:current_user]
-    if Games.is_game_locked("scratchcard", user) do
+    if Games.game_locked?("scratchcard", user) do
       conn
       |> put_flash(:error, "You can only buy a scratchcard once every six hours!")
       |> redirect(to: Routes.location_path(conn, :scratchcard_booth))
