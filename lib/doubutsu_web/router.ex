@@ -56,13 +56,13 @@ defmodule DoubutsuWeb.Router do
   end
 
   scope "/users", DoubutsuWeb do
-    pipe_through :browser
+    pipe_through [:browser, :needs_auth]
 
     get "/:id", UserController, :show
   end
 
   scope "/prizes", DoubutsuWeb do
-    pipe_through :browser
+    pipe_through [:browser, :needs_auth]
 
     resources "/", PrizeController, except: [:index]
 
@@ -72,14 +72,14 @@ defmodule DoubutsuWeb.Router do
   end
 
   scope "/pets", DoubutsuWeb do
-    pipe_through :browser
+    pipe_through [:browser, :needs_auth]
 
     resources "/", PetController, only: [:show, :new]
     post "/new_pet", PetController, :new_pet
   end
 
   scope "/items", DoubutsuWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, :needs_auth]
     resources "/", ItemController
   end
 

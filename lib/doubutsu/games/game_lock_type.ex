@@ -7,6 +7,7 @@ defmodule Doubutsu.Games.GameLockType do
     field :max_count, :integer
     field :name, :string
     field :lock_duration, :integer
+    field :is_daily, :boolean, default: false
 
     has_many :game_locks, Doubutsu.Games.GameLock
 

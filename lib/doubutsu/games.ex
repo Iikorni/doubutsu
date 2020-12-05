@@ -222,6 +222,18 @@ defmodule Doubutsu.Games do
     Repo.all(GameLockType)
   end
 
+  def list_non_daily_lock_types do
+    from(lock_type in GameLockType,
+          where: lock_type.is_daily == false)
+    |> Repo.all()
+  end
+
+  def list_daily_lock_types do
+    from(lock_type in GameLockType,
+          where: lock_type.is_daily == true)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single game_lock_type.
 
@@ -416,6 +428,13 @@ defmodule Doubutsu.Games do
     from(l in Doubutsu.Games.GameLock,
           where: l.count > 0,
           where: l.last_lock_time <= ^NaiveDateTime.add(NaiveDateTime.local_now(), -lock_type.lock_duration),
+          where: l.game_lock_type_id == ^lock_type.id)
+    |> Repo.all()
+  end
+
+  def get_all_locked_daily_locks_for_type(lock_type) do
+    from(l in Doubutsu.Games.GameLock,
+          where: l.count > 0,
           where: l.game_lock_type_id == ^lock_type.id)
     |> Repo.all()
   end

@@ -310,6 +310,12 @@ defmodule Doubutsu.Pets do
     Repo.all(Pet)
   end
 
+  def list_all_pets_for_hunger do
+    from(p in Pet,
+      where: p.hunger != :dying)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single pet.
 
