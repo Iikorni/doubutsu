@@ -412,6 +412,14 @@ defmodule Doubutsu.Games do
     NaiveDateTime.diff(NaiveDateTime.local_now(), lock.last_lock_time) >= lock_type.lock_duration
   end
 
+  def get_all_finished_locks_for_type(lock_type) do
+    from(l in Doubutsu.Games.GameLock,
+          where: l.count > 0,
+          where: l.last_lock_time <= ^NaiveDateTime.add(NaiveDateTime.local_now(), -lock_type.lock_duration),
+          where: l.game_lock_type_id == ^lock_type.id)
+    |> Repo.all()
+  end
+
   def game_locked?(name, user) do
     lock_type = get_game_lock_type_by_name!(name)
 
