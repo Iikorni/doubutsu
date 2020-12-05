@@ -5,13 +5,39 @@ defmodule DoubutsuWeb.LocationController do
   alias Doubutsu.Things
   alias Doubutsu.Games
 
-  def scratchcard_booth(conn, _) do
-    scratch_types = Games.list_scratch_types()
-    render(conn, "mall/sc_booth.html", title: "Scratchard Booth", scratch_types: scratch_types)
+  def soup_get(conn, _) do
+    render(conn, "mall/soup.html", title: "Soup Kitchen")
+  end
+
+  def soup_request(conn, _) do
+    current_user = conn.assigns[:current_user]
+    owner = current_user.owner
+    pets = Doubutsu.Pets.get_pets_for_owner(owner)
+    if Enum.count(pets) == 0 do
+      conn
+      |> put_flash(:error, "You need a pet to qualify for the soup kitchen!")
+      |> redirect(to: Routes.location_path(conn, :soup_get))
+    else
+      pairs = Enum.reduce(pets, [], fn pet, lst ->
+        case Prizes.get_prize_from_prize_pool(Prizes.get_prize_pool_by_name!("soup_kitchen")) do
+          {:ok, prize} ->
+            lst ++ [{pet, prize}]
+          {:none, _} ->
+            lst ++ [{pet, nil}]
+        end
+      end)
+      conn
+      |> render("mall/soup_result.html", title: "Soup Kitchen", pairs: pairs)
+    end
   end
 
   def wheel(conn, _) do
     render(conn, "mall/wheel.html", title: "Wheel")
+  end
+
+  def scratchcard_booth(conn, _) do
+    scratch_types = Games.list_scratch_types()
+    render(conn, "mall/booth.html", title: "Scratchard Booth", scratch_types: scratch_types)
   end
 
   def scratchcard_purchase(conn, %{"request" => request}) do

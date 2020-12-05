@@ -336,6 +336,13 @@ defmodule Doubutsu.Pets do
     |> Repo.preload([:breed, :colour])
   end
 
+  def get_pets_for_owner(owner) do
+    from(pet in Pet,
+          where: pet.owner_id == ^owner.id)
+    |> Repo.all()
+    |> Repo.preload([:colour, :breed])
+  end
+
   @doc """
   Creates a pet.
 

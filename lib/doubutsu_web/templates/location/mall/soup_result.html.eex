@@ -1,0 +1,10 @@
+<h1>Soup Kitchen</h1>
+<div class="centered">
+    <%= for pair <- @pairs do %>
+        <div style="background-color:#AAA;width:25%;margin-left:auto;margin-right:auto;">
+            <%= DoubutsuWeb.PetView.pet_img(elem(pair, 0)) %>
+            <%= img_tag(Path.join("/images/items/", elem(pair, 1).item.picture), alt: elem(pair, 1).item.description, title: elem(pair, 1).item.description) %>
+            <p><b><%= elem(pair, 0).name %></b> got some <b><%= elem(pair, 1).item.name %></b>.</p>
+        </div>
+    <% end %>
+</div>

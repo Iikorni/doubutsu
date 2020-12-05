@@ -1,0 +1,25 @@
+<h1>Soup Kitchen</h1>
+<div class="loc-description">
+<p>As part of community outreach, some members of the Ichiban mall set up a soup kitchen here.</p>
+<p>Once per day, you can get a bowl of soup for each one of your pets.</p>
+</div>
+<div class="centered">
+    <%=img_tag("/images/soup_kitchen.png", width: 350) %>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <%= form_for @conn, Routes.location_path(@conn, :soup_request), fn _ -> %>
+        <div class="input-group" style="margin-bottom:0;">
+            <%= submit "Grab some soup" %>
+        </div>
+    <% end %>
+    <br>
+    <hr>
+    <br>
+    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :post], fn _ -> %>
+        <div class="input-group" style="margin-bottom:0;">
+            <%= submit "Back to the Mall" %>
+        </div>
+    <% end %>
+</div>

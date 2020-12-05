@@ -21,8 +21,16 @@
             <%= select f, :scratch_id, Enum.map(@scratch_types, &{"#{&1.name} - (#{&1.item.price} ¥)", &1.slug}), onchange: "on_sc_select();"%>
             <%= error_tag f, :scratch_id %>
         </div>
-        <div class="input-group">
+        <div class="input-group" style="margin-bottom:0;">
             <%= submit "Buy Scratchcard" %>
+        </div>
+    <% end %>
+    <br>
+    <hr>
+    <br>
+    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :post], fn _ -> %>
+        <div class="input-group" style="margin-bottom:0;">
+            <%= submit "Back to the Mall" %>
         </div>
     <% end %>
     <script>

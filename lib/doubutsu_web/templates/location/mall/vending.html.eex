@@ -1,10 +1,13 @@
 <h1>Vending Machine</h1>
-
-<div class="centered">
-    <%=img_tag("/images/vending.png", width: 350) %>
+<div class="loc-description">
     <p>In an odd part of the mall sits a lone vending machine, seemingly unattended.</p>
     <p>A big sign says:</p>
     <h2>200 ¥ per can</h2>
+</div>
+<div class="centered">
+    <%=img_tag("/images/vending.png", width: 350) %>
+    <br>
+    <br>
     <hr>
     <br>
     <%= if Doubutsu.Things.has_the_cash(@current_user.inventory, 200) do %>
@@ -15,7 +18,7 @@
             <%= select f, :flavour, ["Green", "Red", "Blue", "Orange", "Violet"] |> Enum.with_index %>
             <%= error_tag f, :flavour %>
         </div>
-        <div class="input-group">
+        <div class="input-group" style="margin-bottom:0;">
             <%= submit "Vend" %>
         </div>
     <% end %>
@@ -25,8 +28,8 @@
     <br>
     <hr>
     <br>
-    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :get], fn _ -> %>
-        <div class="input-group">
+    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :post], fn _ -> %>
+        <div class="input-group" style="margin-bottom:0;">
             <%= submit "Back to the Mall" %>
         </div>
     <% end %>
