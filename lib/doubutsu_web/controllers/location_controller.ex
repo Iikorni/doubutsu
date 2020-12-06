@@ -11,23 +11,41 @@ defmodule DoubutsuWeb.LocationController do
 
   def soup_request(conn, _) do
     current_user = conn.assigns[:current_user]
-    owner = current_user.owner
-    pets = Doubutsu.Pets.get_pets_for_owner(owner)
-    if Enum.count(pets) == 0 do
+    if Games.game_locked?("soup_kitchen", current_user) do
       conn
-      |> put_flash(:error, "You need a pet to qualify for the soup kitchen!")
+      |> put_flash(:error, "You can only use the soup kitchen once per day!")
       |> redirect(to: Routes.location_path(conn, :soup_get))
     else
-      pairs = Enum.reduce(pets, [], fn pet, lst ->
-        case Prizes.get_prize_from_prize_pool(Prizes.get_prize_pool_by_name!("soup_kitchen")) do
-          {:ok, prize} ->
-            lst ++ [{pet, prize}]
-          {:none, _} ->
-            lst ++ [{pet, nil}]
+      owner = current_user.owner
+      pets = Doubutsu.Pets.get_pets_for_owner(owner)
+      if Enum.count(pets) == 0 do
+        conn
+        |> put_flash(:error, "You need a pet to qualify for the soup kitchen!")
+        |> redirect(to: Routes.location_path(conn, :soup_get))
+      else
+        pairs = Enum.reduce(pets, [], fn pet, lst ->
+          case Prizes.get_prize_from_prize_pool(Prizes.get_prize_pool_by_name!("soup_kitchen")) do
+            {:ok, prize} ->
+              case Things.create_instance_from_item_inventory(prize.item, current_user.inventory) do
+                {:ok, _} ->
+                  lst ++ [{pet, prize}]
+                {:error, _} ->
+                  lst
+                end
+            {:none, _} ->
+              lst
+          end
+        end)
+        if Enum.count(pairs) != 0 do
+          Games.try_increment_lock("soup_kitchen", current_user)
+          conn
+          |> render("mall/soup_result.html", title: "Soup Kitchen", pairs: pairs)
+        else
+          conn
+          |> put_flash(:error, "For some reason, the soup ran out!")
+          |> redirect(to: Routes.location_path(conn, :soup_get))
         end
-      end)
-      conn
-      |> render("mall/soup_result.html", title: "Soup Kitchen", pairs: pairs)
+      end
     end
   end
 
