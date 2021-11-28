@@ -23,9 +23,8 @@ defmodule Doubutsu.Tasks.Games do
   end
 
   def try_clear_lock(multi, lock) do
-    Ecto.Multi.update(multi,
-      {:lock, lock.id},
-      clear_lock_changeset(lock))
+    multi
+    |> Ecto.Multi.update({:lock, lock.id}, clear_lock_changeset(lock))
   end
 
   def clear_lock_changeset(lock) do

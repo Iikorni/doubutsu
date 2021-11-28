@@ -39,6 +39,7 @@ defmodule DoubutsuWeb.PrizeController do
 
     case Prizes.update_prize(prize, prize_params) do
       {:ok, prize} ->
+        prize = Doubutsu.Repo.preload(prize, :prize_pool)
         conn
         |> put_flash(:info, "Prize updated successfully.")
         |> redirect(to: Routes.prize_pool_path(conn, :show, prize.prize_pool))

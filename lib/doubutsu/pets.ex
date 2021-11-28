@@ -18,8 +18,10 @@ defmodule Doubutsu.Pets do
 
   """
   def list_breeds do
-    Repo.all(from b in Breed, order_by: [asc: :id])
-    |> Repo.preload(:display_colour)
+    from(b in Breed,
+      order_by: [asc: :id],
+      preload: :display_colour)
+    |> Repo.all()
   end
 
   @doc """
@@ -331,16 +333,17 @@ defmodule Doubutsu.Pets do
 
   """
   def get_pet!(id) do
-    Pet
-    |> Repo.get!(id)
-    |> Repo.preload([:breed, :colour])
+    from(p in Pet,
+      where: p.id == ^id,
+      preload: [:breed, :colour])
+    |> Repo.one!()
   end
 
   def get_pets_for_owner(owner) do
     from(pet in Pet,
-          where: pet.owner_id == ^owner.id)
+          where: pet.owner_id == ^owner.id,
+          preload: [:colour, :breed])
     |> Repo.all()
-    |> Repo.preload([:colour, :breed])
   end
 
   @doc """

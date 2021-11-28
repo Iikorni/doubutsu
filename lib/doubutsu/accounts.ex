@@ -18,9 +18,9 @@ defmodule Doubutsu.Accounts do
 
   """
   def list_users do
-    User
+    from(User,
+      preload: :credential)
     |> Repo.all()
-    |> Repo.preload(:credential)
   end
 
   @doc """
@@ -38,9 +38,10 @@ defmodule Doubutsu.Accounts do
 
   """
   def get_user!(id) do
-    User
-    |> Repo.get!(id)
-    |> Repo.preload([:credential, :inventory, owner: [active_pet: [:breed, :colour]]])
+    from(u in User,
+      where: u.id == ^id,
+      preload: [:credential, :inventory, owner: [active_pet: [:breed, :colour]]])
+    |> Repo.one!()
   end
 
   @doc """

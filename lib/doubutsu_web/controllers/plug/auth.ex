@@ -18,7 +18,7 @@ defmodule DoubutsuWeb.Auth do
     |> configure_session(renew: true)
   end
 
-  def logout(conn, _user) do
+  def logout(conn) do
     configure_session(conn, drop: true)
   end
 

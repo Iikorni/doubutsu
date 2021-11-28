@@ -18,10 +18,10 @@ defmodule Doubutsu.Things do
 
   """
   def list_items do
-    Item
-    |> order_by(asc: :id)
+    from(Item,
+      order_by: [asc: :id],
+      preload: :type)
     |> Repo.all
-    |> Repo.preload(:type)
   end
 
   @doc """
@@ -39,8 +39,10 @@ defmodule Doubutsu.Things do
 
   """
   def get_item!(id) do
-    Repo.get!(Item, id)
-    |> Repo.preload(:type)
+    from(i in Item,
+      where: i.id == ^id,
+      preload: :type)
+    |> Repo.one!()
   end
 
   @doc """
@@ -156,19 +158,20 @@ defmodule Doubutsu.Things do
 
   """
   def get_inventory!(id) do
-    # TODO/NOTE: This shouldn't be edited, but get_inventory should have an
-    # alternative extension function for stuff like the inventory view, such
-    # that items can be pre-loaded on demand, rather than being passed on
-    # every request for cash onhand...
-    Inventory
-    |> Repo.get!(id)
-    |> Repo.preload(user: :credential)
+    from(i in Inventory,
+      where: i.id == ^id,
+      preload: [user: :credential])
+    |> Repo.one!()
   end
 
   def get_full_inventory!(id) do
-    Inventory
-    |> Repo.get!(id)
-    |> Repo.preload(instances: from(i in Instance, order_by: [desc: i.id], preload: :item))
+    from(i in Inventory,
+      where: i.id == ^id,
+      preload: [instances:
+        ^from(ins in Instance,
+          order_by: [desc: ins.id],
+          preload: :item)])
+    |> Repo.one!()
   end
 
   @doc """

@@ -19,7 +19,7 @@ defmodule DoubutsuWeb.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> DoubutsuWeb.Auth.logout(conn)
+    |> DoubutsuWeb.Auth.logout()
     |> redirect(to: Routes.page_path(conn, :index))
   end
 end

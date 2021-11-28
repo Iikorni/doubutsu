@@ -7,6 +7,9 @@ defmodule Doubutsu.Games do
   alias Doubutsu.Repo
 
   alias Doubutsu.Games.ScratchType
+  alias Doubutsu.Games.ScratchPrize
+  alias Doubutsu.Games.GameLock
+  alias Doubutsu.Games.GameLockType
 
   @doc """
   Returns the list of scratch_types.
@@ -18,9 +21,9 @@ defmodule Doubutsu.Games do
 
   """
   def list_scratch_types do
-    ScratchType
+    from(ScratchType,
+      preload: :item)
     |> Repo.all()
-    |> Repo.preload(:item)
   end
 
   @doc """
@@ -40,9 +43,13 @@ defmodule Doubutsu.Games do
   def get_scratch_type!(id), do: Repo.get!(ScratchType, id)
 
   def get_scratch_type_by_slug(slug) do
-    case Repo.get_by(ScratchType, slug: slug) do
+    from(s in ScratchType,
+      where: s.slug == ^slug,
+      preload: :item)
+    |> Repo.one()
+    |> case do
       nil -> {:error, nil}
-      scratch_type -> {:ok, Repo.preload(scratch_type, :item)}
+      scratch_type -> {:ok, scratch_type}
     end
   end
 
@@ -110,8 +117,6 @@ defmodule Doubutsu.Games do
   def change_scratch_type(%ScratchType{} = scratch_type, attrs \\ %{}) do
     ScratchType.changeset(scratch_type, attrs)
   end
-
-  alias Doubutsu.Games.ScratchPrize
 
   @doc """
   Returns the list of scratch_prizes.
@@ -207,7 +212,6 @@ defmodule Doubutsu.Games do
     ScratchPrize.changeset(scratch_prize, attrs)
   end
 
-  alias Doubutsu.Games.GameLockType
 
   @doc """
   Returns the list of game_lock_types.
@@ -323,8 +327,6 @@ defmodule Doubutsu.Games do
     GameLockType.changeset(game_lock_type, attrs)
   end
 
-  alias Doubutsu.Games.GameLock
-
   @doc """
   Returns the list of game_lock.
 
@@ -335,8 +337,9 @@ defmodule Doubutsu.Games do
 
   """
   def list_game_locks do
-    Repo.all(GameLock)
-    |> Repo.preload(:game_lock_type)
+    from(GameLock,
+      preload: :game_lock_type)
+    |> Repo.all()
   end
 
   @doc """
@@ -425,7 +428,7 @@ defmodule Doubutsu.Games do
   end
 
   def get_all_finished_locks_for_type(lock_type) do
-    from(l in Doubutsu.Games.GameLock,
+    from(l in GameLock,
           where: l.count > 0,
           where: l.last_lock_time <= ^NaiveDateTime.add(NaiveDateTime.local_now(), -lock_type.lock_duration),
           where: l.game_lock_type_id == ^lock_type.id)
@@ -433,7 +436,7 @@ defmodule Doubutsu.Games do
   end
 
   def get_all_locked_daily_locks_for_type(lock_type) do
-    from(l in Doubutsu.Games.GameLock,
+    from(l in GameLock,
           where: l.count > 0,
           where: l.game_lock_type_id == ^lock_type.id)
     |> Repo.all()
@@ -442,11 +445,12 @@ defmodule Doubutsu.Games do
   def game_locked?(name, user) do
     lock_type = get_game_lock_type_by_name!(name)
 
-    lock = Repo.one(from(
-      lock in GameLock,
-      where: lock.user_id == ^user.id,
-      where: lock.game_lock_type_id == ^lock_type.id
-      ))
+    lock =
+      from(lock in GameLock,
+        where: lock.user_id == ^user.id,
+        where: lock.game_lock_type_id == ^lock_type.id
+      )
+      |> Repo.one!
 
     lock && lock_type.max_count <= lock.count
   end

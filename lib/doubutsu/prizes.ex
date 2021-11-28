@@ -36,15 +36,17 @@ defmodule Doubutsu.Prizes do
 
   """
   def get_prize_pool!(id) do
-    PrizePool
-    |> Repo.get!(id)
-    |> Repo.preload(prizes: [:item])
+    from(p in PrizePool,
+      where: p.id == ^id,
+      preload: [prizes: [:item]])
+    |> Repo.one!()
   end
 
   def get_prize_pool_by_name!(name) do
-    PrizePool
-    |> Repo.get_by(name: name)
-    |> Repo.preload(prizes: [:item])
+    from(p in PrizePool,
+      where: p.name == ^name,
+      preload: [prizes: [:item]])
+    |> Repo.one!()
   end
 
   @doc """
@@ -158,8 +160,10 @@ defmodule Doubutsu.Prizes do
 
   """
   def get_prize!(id) do
-    Repo.get!(Prize, id)
-    |> Repo.preload(:prize_pool)
+    from(p in Prize,
+      where: p.id == ^id,
+      preload: :prize_pool)
+    |> Repo.one!()
   end
 
   @doc """
