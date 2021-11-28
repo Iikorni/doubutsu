@@ -94,6 +94,12 @@ defmodule DoubutsuWeb.Router do
     get "/", InventoryController, :show_individual
   end
 
+  scope "/shop", DoubutsuWeb do
+    pipe_through [:browser, :needs_auth]
+
+    get "/:id", ShopController, :show
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", DoubutsuWeb do
   #   pipe_through :api

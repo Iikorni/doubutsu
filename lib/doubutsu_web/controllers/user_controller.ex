@@ -48,7 +48,7 @@ defmodule DoubutsuWeb.UserController do
       conn
       |> put_status(:not_found)
       |> put_view(DoubutsuWeb.ErrorView)
-      |> render("404.html")
+      |> render("404.html", title: "Not found")
       |> halt()
     end
   end

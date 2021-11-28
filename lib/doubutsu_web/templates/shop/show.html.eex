@@ -1,0 +1,8 @@
+<h1>Browsing <%= @shop.name %></h1>
+<div class="centered">
+<hr>
+<img src="/images/splash.png" width="256px" height="256px"/>
+<hr>
+<p><%= @shop.description %></p>
+</div>
+<hr>
