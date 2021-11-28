@@ -43,22 +43,22 @@ defmodule DoubutsuWeb.Router do
   scope "/mall", DoubutsuWeb do
     pipe_through [:browser, :needs_auth]
 
-    get "/", LocationController, :mall
-    post "/", LocationController, :mall
+    get "/", Location.MallController, :index
+    post "/", Location.MallController, :index
 
-    get "/wheel", LocationController, :wheel
+    get "/wheel", Location.MallController, :wheel
 
-    post "/booth", LocationController, :scratchcard_purchase
+    post "/booth", Location.MallController, :scratchcard_purchase
 
-    get "/vending_result", LocationController, :vending_machine_fallback
-    post "/vending_result", LocationController, :vending_machine_result
+    get "/vending_result", Location.MallController, :vending_machine_fallback
+    post "/vending_result", Location.MallController, :vending_machine_result
 
-    get "/soup", LocationController, :soup_get
-    post "/soup", LocationController, :soup_request
+    get "/soup", Location.MallController, :soup_get
+    post "/soup", Location.MallController, :soup_request
 
     pipe_through [:purchase_token_gen]
-    get "/booth", LocationController, :scratchcard_booth
-    get "/vending", LocationController, :vending_machine
+    get "/booth", Location.MallController, :scratchcard_booth
+    get "/vending", Location.MallController, :vending_machine
   end
 
   scope "/users", DoubutsuWeb do

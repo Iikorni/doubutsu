@@ -1,6 +1,6 @@
 <h1>Inventory</h1>
 
-<p class="left-align"><b>Number of items:</b> <%= Enum.count(@inventory.instances) %>
+<p class="left-align"><b><%= ngettext "You have 1 item.", "You have %{count} items.", Enum.count(@inventory.instances) %> </b>
 
 <div class="inventory">
 <%= for instance <- @inventory.instances do %>

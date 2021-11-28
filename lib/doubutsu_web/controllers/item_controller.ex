@@ -23,7 +23,7 @@ defmodule DoubutsuWeb.ItemController do
         |> redirect(to: Routes.item_path(conn, :show, item))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        types = Thins.list_types
+        types = Things.list_types
         render(conn, "new.html", changeset: changeset, title: "New Item", types: types)
     end
   end

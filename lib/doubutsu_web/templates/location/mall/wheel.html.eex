@@ -4,6 +4,9 @@
 </div>
 <audio id="click" src="/sounds/click.wav" style="display:none;" preload="auto" controls="none" />
 <script>
+    const MAX_CLICK_ARR = 2;
+    const MAX_PASSES = 5;
+
     var img = new Image();
     var cursor = new Image();
     var canvas = document.getElementById('wheel');
@@ -12,10 +15,15 @@
     var goal_position = Math.floor(Math.random() * 16);
     var goal = wheel_position_to_degrees(goal_position);
     var degree = 4;
-    var passes_left = 10;
-    var since_start = 0;
-    var click_snd = document.getElementById("click");
+    var passes_left = MAX_PASSES;
+    var click_timer = 0;
+    var click_arr = [];
+    var click_curr = 0;
     var started = false;
+
+    for(var i =0;i < MAX_CLICK_ARR;i++) {
+        click_arr.push(document.getElementById("click").cloneNode());
+    }
 
     var img_done = false;
     var cursor_done = false;
@@ -23,14 +31,17 @@
     canvas.addEventListener('click', function() {
         try_start_animation();
     })
+
     img.addEventListener('load', function() {
         img_done = true;
         try_draw_loaded();
     }, false);
+
     cursor.addEventListener('load', function() {
         cursor_done = true;
         try_draw_loaded();
     }, false);
+
     img.src = '/images/wheel.png';
     cursor.src = '/images/wheel_cursor.png';
 
@@ -53,20 +64,25 @@
         }
     }
 
+    function play_click_sound() {
+        click_arr[click_curr++].play();
+        if(click_curr >= MAX_CLICK_ARR) click_curr = 0;
+    }
+
     function increment_wheel_degree() {
         i += degree
-        since_start += degree;
-        if(since_start >= 22.5) {
-            since_start -= 22.5;
-            click_snd.cloneNode(false).play();
+        click_timer += degree;
+        if(click_timer >= 22.5) {
+            click_timer -= 22.5;
+            play_click_sound();
         }
         if(passes_left > 0 && i >= 360) {
             i -= 360;
             passes_left--;
             if(passes_left > 2 && passes_left <= 5) {
-                degree = 3
+                degree = 3;
             } else if(passes_left > 1 && passes_left <= 2) {
-                degree = 2
+                degree = 2;
             } else if(passes_left == 1) {
                 degree = 1;
             }

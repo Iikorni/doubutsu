@@ -15,10 +15,10 @@
         <area shape="rect" coords="115, 99, 148, 132" href="#" />
         <area shape="rect" coords="197, 95, 230, 128" href="#" />
         <area shape="rect" coords="197, 137, 230, 170" href="#" />
-        <area shape="rect" coords="197, 182, 230, 215" href="<%= Routes.location_path(@conn, :scratchcard_booth) %>" />
+        <area shape="rect" coords="197, 182, 230, 215" href="<%= Routes.mall_path(@conn, :scratchcard_booth) %>" />
         <area shape="rect" coords="74, 205, 110, 241" href="#" />
-        <area shape="rect" coords="125, 240, 158, 274" href="<%= Routes.location_path(@conn, :soup_get) %>" />
-        <area shape="rect" coords="170, 79, 179, 89" href="<%= Routes.location_path(@conn, :vending_machine) %>" />
+        <area shape="rect" coords="125, 240, 158, 274" href="<%= Routes.mall_path(@conn, :soup_get) %>" />
+        <area shape="rect" coords="170, 79, 179, 89" href="<%= Routes.mall_path(@conn, :vending_machine) %>" />
     </map>
     <hr>
 </div>

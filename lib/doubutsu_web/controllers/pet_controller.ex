@@ -26,7 +26,7 @@ defmodule DoubutsuWeb.PetController do
 
   def new_pet(conn, _) do
     conn
-    |> put_flash(:error, "You must select a pet breed before continuing!")
+    |> put_flash(:error, gettext "You must select a pet breed before continuing!")
     |> redirect(to: Routes.pet_path(conn, :new))
   end
 end

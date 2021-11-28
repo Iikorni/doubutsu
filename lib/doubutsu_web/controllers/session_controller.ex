@@ -12,7 +12,7 @@ defmodule DoubutsuWeb.SessionController do
         |> redirect(to: Routes.page_path(conn, :index))
       {:error, _reason, conn} ->
         conn
-        |> put_flash(:error, "Invalid username/password")
+        |> put_flash(:error, gettext "Invalid username/password")
         |> render("new.html", title: "Login")
     end
   end

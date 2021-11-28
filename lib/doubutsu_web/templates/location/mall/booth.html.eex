@@ -13,9 +13,9 @@
     </ul>
     <hr>
     <br>
-    <%= render DoubutsuWeb.LocationView, "mall/_scratchcard.html" %>
+    <%= render DoubutsuWeb.Location.MallView, "_scratchcard.html" %>
     <br>
-    <%= form_for @conn, Routes.location_path(@conn, :scratchcard_purchase), [as: :request], fn f -> %>
+    <%= form_for @conn, Routes.mall_path(@conn, :scratchcard_purchase), [as: :request], fn f -> %>
         <%= hidden_input f, :token, value: @token%>
         <div class="input-group">
             <%= select f, :scratch_id, Enum.map(@scratch_types, &{"#{&1.name} - (#{&1.item.price} ¥)", &1.slug}), onchange: "on_sc_select();"%>
@@ -28,7 +28,7 @@
     <br>
     <hr>
     <br>
-    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :post], fn _ -> %>
+    <%= form_for @conn, Routes.mall_path(@conn, :index), [method: :post], fn _ -> %>
         <div class="input-group" style="margin-bottom:0;">
             <%= submit "Back to the Mall" %>
         </div>

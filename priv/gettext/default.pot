@@ -1,0 +1,85 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here as no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:45
+msgid "For some reason, the soup ran out!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:95
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:150
+msgid "Hmm. We're not sure how you got here..."
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/session_controller.ex:15
+msgid "Invalid username/password"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:83
+msgid "Thank you very much for your purchase of a %{ticket} ticket!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/user_controller.ex:20
+msgid "User created successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:73
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:125
+msgid "Whoops, it looks like you don't have enough money..."
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:65
+msgid "You can only buy a scratchcard once every six hours!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:16
+msgid "You can only use the soup kitchen once per day!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:103
+msgid "You didn't select a scratchcard!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/pet_controller.ex:29
+msgid "You must select a pet breed before continuing!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:23
+msgid "You need a pet to qualify for the soup kitchen!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/user_controller.ex:38
+msgid "You're not logged in!"
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/controllers/location/mall_controller.ex:88
+msgid "Your purchase was unssuccesful, for whatever reason..."
+msgstr ""
+
+#, elixir-format
+#: lib/doubutsu_web/templates/inventory/show.html.eex:3
+msgid "You have 1 item."
+msgid_plural "You have %{count} items."
+msgstr[0] ""
+msgstr[1] ""

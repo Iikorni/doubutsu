@@ -17,7 +17,7 @@ defmodule DoubutsuWeb.UserController do
       {:ok, %{user: user}} ->
         conn
         |> DoubutsuWeb.Auth.login(user)
-        |> put_flash(:info, "User created successfully.")
+        |> put_flash(:info, gettext "User created successfully.")
         |> redirect(to: Routes.user_path(conn, :show, user))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -35,7 +35,7 @@ defmodule DoubutsuWeb.UserController do
       conn
     else
       conn
-      |> put_flash(:error, "You're not logged in!")
+      |> put_flash(:error, gettext "You're not logged in!")
       |> redirect(to: Routes.session_path(conn, :new))
       |> halt()
     end

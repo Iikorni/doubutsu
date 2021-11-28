@@ -15,7 +15,7 @@ defmodule Doubutsu.Games.GameLock do
   @doc false
   def changeset(game_lock, attrs) do
     game_lock
-    |> cast(attrs, [:count])
+    |> cast(attrs, [:count, :last_lock_time])
     |> validate_required([])
   end
 end

@@ -11,7 +11,7 @@
     <hr>
     <br>
     <%= if Doubutsu.Things.has_the_cash(@current_user.inventory, 200) do %>
-    <%= form_for @conn, Routes.location_path(@conn, :vending_machine_result), [as: :request], fn f -> %>
+    <%= form_for @conn, Routes.mall_path(@conn, :vending_machine_result), [as: :request], fn f -> %>
         <%= hidden_input f, :token, value: @token%>
         <div class="input-group">
             <%= label f, :flavour, "Button To Press:" %>
@@ -28,7 +28,7 @@
     <br>
     <hr>
     <br>
-    <%= form_for @conn, Routes.location_path(@conn, :mall), [method: :post], fn _ -> %>
+    <%= form_for @conn, Routes.mall_path(@conn, :index), [method: :post], fn _ -> %>
         <div class="input-group" style="margin-bottom:0;">
             <%= submit "Back to the Mall" %>
         </div>
